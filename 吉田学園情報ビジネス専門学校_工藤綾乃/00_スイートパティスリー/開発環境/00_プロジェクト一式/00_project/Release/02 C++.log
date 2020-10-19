@@ -1,0 +1,54 @@
+﻿  bg.cpp
+  boss.cpp
+  bullet.cpp
+  enemy.cpp
+  enemy_type1.cpp
+  enemy_type3.cpp
+  enemytype2.cpp
+  energy_ui.cpp
+energy_ui.cpp(142): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  explosion.cpp
+  fade.cpp
+  game.cpp
+  item.cpp
+item.cpp(211): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+item.cpp(216): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  laser.cpp
+  life.cpp
+  main.cpp
+  manager.cpp
+  missile.cpp
+  number.cpp
+  option.cpp
+option.cpp(189): warning C4244: '引数': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
+  particle_effect.cpp
+  コンパイル中...
+  pause.cpp
+  player.cpp
+player.cpp(207): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+player.cpp(466): warning C4244: '引数': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
+  polygon.cpp
+  powerui.cpp
+  ranking.cpp
+  ranking_ui.cpp
+ranking_ui.cpp(109): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  renderer.cpp
+  result.cpp
+  scene2d.cpp
+  score.cpp
+  shield.cpp
+  stage.cpp
+stage.cpp(162): warning C4800: 'int': ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
+  terrain.cpp
+  title.cpp
+title.cpp(164): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+title.cpp(165): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  triangle.cpp
+  tutorial.cpp
+  コード生成しています。
+  4 of 521 functions ( 0.8%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  コード生成が終了しました。
+  02 C++.vcxproj -> C:\Users\student\Desktop\学校\制作実践演習\second_shooting\project\Release\01_Scenefile.exe
+  02 C++.vcxproj -> C:\Users\student\Desktop\学校\制作実践演習\second_shooting\project\Release\01_Scenefile.pdb (Full PDB)

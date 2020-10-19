@@ -1,0 +1,83 @@
+//=========================================================
+//		
+//		ステージ情報　(stage.txt)
+//		Author:KUDO AYANO
+//=========================================================
+
+	TYPE	オブジェクトの種類
+		・・・CScene::OBJTYPE_ENEMY		// 敵
+		・・・CScene::OBJTYPE_STAR			// 星
+		
+	FORMAITION 編隊の数(最大10体)
+		
+//---------------------------------------------------------
+
+SCRIPT				//この行は消さないこと
+	
+	OBJSET
+			FRAME 80
+			POS 1280 100 0
+			TYPE 7
+			FORMAITION 7
+			ORBITSET
+				OBIT 300 100 0
+				OBIT 640 360 0
+				OBIT 5000 360 0
+			END_ORBITSET
+			
+	END_OBJSET
+
+	OBJSET
+			FRAME 300
+			POS 1280 600 0
+			TYPE 7
+			FORMAITION 7
+			ORBITSET
+				OBIT 300 600 0
+				OBIT 640 360 0
+				OBIT 5000 500 0
+			END_ORBITSET
+			
+	END_OBJSET
+
+	OBJSET
+			FRAME 300
+			POS 1280 600 0
+			TYPE 7
+			FORMAITION 7
+			ORBITSET
+				OBIT 300 600 0
+				OBIT 640 360 0
+				OBIT 5000 360 0
+			END_ORBITSET
+			
+	END_OBJSET
+	
+	OBJSET
+			FRAME 1
+			POS 1280 100 0
+			TYPE 7
+			FORMAITION 7
+			ORBITSET
+				OBIT 300 100 0
+				OBIT 640 360 0
+				OBIT 5000 360 0
+			END_ORBITSET
+			
+	END_OBJSET
+	
+	OBJSET
+			FRAME 200
+			POS 1280 50 0
+			TYPE 11
+			
+	END_OBJSET
+	
+		OBJSET
+			FRAME 1
+			POS 1280 670 0
+			TYPE 11
+			
+	END_OBJSET
+	
+END_SCRIPT		//この行は消さないこと

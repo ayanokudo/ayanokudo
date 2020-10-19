@@ -1,0 +1,130 @@
+﻿  bg.cpp
+bg.cpp(57): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  bg.cpp(57): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  boss.cpp
+boss.cpp(80): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  boss.cpp(80): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  bullet.cpp
+bullet.cpp(87): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'const char [27]' から 'LPCWSTR' へ変換できません。
+  bullet.cpp(87): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+bullet.cpp(172): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  enemy_type3.cpp
+enemy_type3.cpp(66): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  enemy_type3.cpp(66): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  energy_ui.cpp
+energy_ui.cpp(78): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  energy_ui.cpp(78): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+energy_ui.cpp(143): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  particle_effect.cpp
+particle_effect.cpp(70): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  particle_effect.cpp(70): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  pause.cpp
+pause.cpp(59): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  pause.cpp(59): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  ranking_ui.cpp
+ranking_ui.cpp(70): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  ranking_ui.cpp(70): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+ranking_ui.cpp(109): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  triangle_effect.cpp
+  enemy.cpp
+enemy.cpp(90): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  enemy.cpp(90): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  enemytype2.cpp
+  enemy_type1.cpp
+  explosion.cpp
+explosion.cpp(53): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'const char [30]' から 'LPCWSTR' へ変換できません。
+  explosion.cpp(53): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  fade.cpp
+  game.cpp
+  item.cpp
+item.cpp(95): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  item.cpp(95): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+item.cpp(211): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+item.cpp(216): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  laser.cpp
+laser.cpp(75): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  laser.cpp(75): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  life.cpp
+life.cpp(77): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  life.cpp(77): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  main.cpp
+main.cpp(50): error C2440: '初期化中': 'const char [9]' から 'LPCWSTR' に変換できません。
+  main.cpp(50): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+main.cpp(76): error C2664: 'HWND CreateWindowExW(DWORD,LPCWSTR,LPCWSTR,DWORD,int,int,int,int,HWND,HMENU,HINSTANCE,LPVOID)': 引数 2 を 'const char [9]' から 'LPCWSTR' へ変換できません。
+  main.cpp(76): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+main.cpp(160): error C2664: 'BOOL UnregisterClassW(LPCWSTR,HINSTANCE)': 引数 1 を 'const char [9]' から 'LPCWSTR' へ変換できません。
+  main.cpp(160): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  manager.cpp
+  コンパイル中...
+  missile.cpp
+missile.cpp(76): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  missile.cpp(76): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  number.cpp
+number.cpp(63): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'const char [27]' から 'LPCWSTR' へ変換できません。
+  number.cpp(63): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  option.cpp
+option.cpp(87): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  option.cpp(87): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+option.cpp(189): warning C4244: '引数': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
+  player.cpp
+player.cpp(128): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'const char [27]' から 'LPCWSTR' へ変換できません。
+  player.cpp(128): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+player.cpp(200): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+player.cpp(458): warning C4244: '引数': 'double' から 'FLOAT' への変換です。データが失われる可能性があります。
+  polygon.cpp
+  powerui.cpp
+powerui.cpp(72): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'const char [25]' から 'LPCWSTR' へ変換できません。
+  powerui.cpp(72): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  ranking.cpp
+  renderer.cpp
+  result.cpp
+result.cpp(83): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  result.cpp(83): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  scene.cpp
+  scene2d.cpp
+  score.cpp
+  shield.cpp
+shield.cpp(68): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  shield.cpp(68): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  sound.cpp
+sound.cpp(55): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [34]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(55): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(67): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [29]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(67): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(97): error C2664: 'HANDLE CreateFileW(LPCWSTR,DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE)': 引数 1 を 'char *' から 'LPCWSTR' へ変換できません。
+  sound.cpp(97): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(100): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [40]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(100): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(105): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [40]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(105): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(113): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [34]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(113): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(119): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [34]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(119): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(124): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [34]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(124): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(132): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [32]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(132): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(138): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [32]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(138): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(146): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [36]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(146): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(153): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [36]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(153): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+sound.cpp(161): error C2664: 'int MessageBoxW(HWND,LPCWSTR,LPCWSTR,UINT)': 引数 2 を 'const char [27]' から 'LPCWSTR' へ変換できません。
+  sound.cpp(161): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  stage.cpp
+stage.cpp(162): warning C4800: 'int': ブール値を 'true' または 'false' に強制的に設定します (警告の処理)
+  star.cpp
+  terrain.cpp
+terrain.cpp(68): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  terrain.cpp(68): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+  title.cpp
+title.cpp(85): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  title.cpp(85): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
+title.cpp(164): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+title.cpp(165): warning C4244: '引数': 'int' から 'FLOAT' への変換です。データが失われる可能性があります。
+  triangle.cpp
+  tutorial.cpp
+tutorial.cpp(85): error C2664: 'HRESULT D3DXCreateTextureFromFileW(LPDIRECT3DDEVICE9,LPCWSTR,LPDIRECT3DTEXTURE9 *)': 引数 2 を 'char *' から 'LPCWSTR' へ変換できません。
+  tutorial.cpp(85): note: 指示された型は関連がありません。変換には reinterpret_cast、C スタイル キャストまたは関数スタイルのキャストが必要です。
