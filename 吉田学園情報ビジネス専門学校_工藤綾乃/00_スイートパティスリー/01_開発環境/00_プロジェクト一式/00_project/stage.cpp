@@ -23,7 +23,8 @@ STAGEDATA CStage::m_pStageData[MAX_POLYGON] = {};
 //******************************************************************************
 // マクロ定義
 //******************************************************************************
-#define FILE_NAME "data/TXT/stage001.txt"
+#define FILE_NAME "data/TXT/stage001.txt"   // 読み込むファイル名
+#define READ_BUFFER (128)                   // 読み込み用バッファ
 
 //=============================================================================
 // [CStage] コンストラクタ
@@ -48,9 +49,9 @@ CStage::~CStage()
 void CStage::ReadFile(void)
 {
     FILE *pFile;
-    char cRead[128];	// 文字読み取り用
-    char cHead[128];	// 比較用
-    char cDie[128];		// 不必要な文字を読み込む
+    char cRead[READ_BUFFER];	// 文字読み取り用
+    char cHead[READ_BUFFER];	// 比較用
+    char cDie[READ_BUFFER];		// 不必要な文字を読み込む
     m_nNumber = 0;      // 登録オブジェクト数リセット
 
     //テキストファイル読み込み
