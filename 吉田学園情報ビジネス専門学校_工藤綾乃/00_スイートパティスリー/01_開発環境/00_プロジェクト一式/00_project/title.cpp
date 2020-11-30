@@ -202,7 +202,6 @@ void CTitle::UpdatePolygon(void)
         {
             // UIの場合点滅させる
             // sinf は m_fAlpha の値から -1.0f～1.0f の範囲を返すので
-            // ALPHA_DISPLACEでアルファ値を
         case TITLE_PRESS_BUTTON:
             m_fAlpha += ALPHA_VARIATION;
             m_color.a = sinf(D3DXToRadian(m_fAlpha)) + ALPHA_DISPLACE;
