@@ -203,8 +203,6 @@ void CRenderer::Draw(void)
             CScene::DrawAll();
             m_pFade->Draw();
 
-
-
 #ifdef _DEBUG
         // FPS•\Ž¦
         DrawFPS();

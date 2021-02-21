@@ -37,10 +37,11 @@
 #include "particle_effect.h"
 #include "ranking.h"
 
-
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
+//#define _BGM_OFF_               // BGMを再生しない(プレイ動画用)
+
 #define END_LATENCY (10)        // ゲーム終了時の待機時間
 
 //*****************************************************************************
@@ -52,14 +53,14 @@ TEXTURE_DATA CGame::m_StatsData[MAX_STATS_BAR] =
     { D3DXVECTOR3(SCREEN_WIDTH / 2.0f,710.0f,0.0f),D3DXVECTOR3(SCREEN_WIDTH,100,0.0f),""}
 };
 
-CPlayer         *CGame::m_pPlayer    = NULL;
-CBg             *CGame::m_pBg        = NULL;
-CStage          *CGame::m_pStage     = NULL;
-CScore          *CGame::m_pScore     = NULL;
-CStar           *CGame::m_pStar      = NULL;
-CTriangle       *CGame::m_pTriangle  = NULL;
-CPowerUI        *CGame::m_pPowerUI   = NULL;
-CPause          *CGame::m_pPause     = NULL;
+CPlayer         *CGame::m_pPlayer    = nullptr;
+CBg             *CGame::m_pBg        = nullptr;
+CStage          *CGame::m_pStage     = nullptr;
+CScore          *CGame::m_pScore     = nullptr;
+CStar           *CGame::m_pStar      = nullptr;
+CTriangle       *CGame::m_pTriangle  = nullptr;
+CPowerUI        *CGame::m_pPowerUI   = nullptr;
+CPause          *CGame::m_pPause     = nullptr;
 CScene2D        *CGame::m_CScene2d[MAX_STATS_BAR] = {};
 CGame::STATE     CGame::m_Gamestate  = STATE_NONE;
 bool             CGame::m_bIsPause     = false;
@@ -70,7 +71,7 @@ bool             CGame::m_bIsPause     = false;
 CGame::CGame()
 {
     // 各メンバ変数の初期化
-    m_pStage = NULL;
+    m_pStage = nullptr;
     m_nCountGameState = 0;
     m_bIsPause=false;
 }
@@ -88,7 +89,7 @@ CGame::~CGame()
 //=============================================================================
 CGame *CGame::Create(void)
 {
-    CGame *pGame = NULL;
+    CGame *pGame = nullptr;
     if (!pGame)
     {
 
@@ -122,8 +123,7 @@ void CGame::Load(void)
     CNumber::Load();
     CShield::Load();
     COption::Load();
-    CPause::Load()
-        ;
+    CPause::Load();
 }
 
 //=============================================================================
@@ -164,7 +164,11 @@ void CGame::Init(void)
 
     m_Gamestate = STATE_NORMAL;
     CSound *pSound = CManager::GetSound();
-    //pSound->Play(CSound::SOUND_LABEL_BGM001);
+
+#ifndef _BGM_OFF_
+    pSound->Play(CSound::SOUND_LABEL_BGM001);
+#endif // _BGM_OFF_
+
 
     // 各種オブジェクトの生成
     m_pBg = CBg::Create();
@@ -181,7 +185,7 @@ void CGame::Init(void)
     m_pPowerUI = CPowerUI::Create();
     m_pPause = CPause::Create();
 
-    if (m_pStage == NULL)
+    if (!m_pStage)
     {
         m_pStage = new CStage;
         m_pStage->Init();
@@ -203,12 +207,13 @@ void CGame::Uninit(void)
         if (m_pStage)
         {
             delete m_pStage;
-            m_pStage = NULL;
+            m_pStage = nullptr;
         }
-        if (m_pPause!=NULL)
-        {
-            m_pPause = NULL;
-        }
+
+        // ポーズの解放
+        if (m_pPause)
+            m_pPause = nullptr;
+
         // テクスチャの破棄
         Unload();
 }

@@ -92,7 +92,7 @@ void CScore::Uninit(void)
             m_apNumber[nCount] = NULL;
         }
     }
-    Release();      // スコア自身を削除
+    SetDeathFlag();      // スコア自身を削除
 }
 
 //=============================================================================

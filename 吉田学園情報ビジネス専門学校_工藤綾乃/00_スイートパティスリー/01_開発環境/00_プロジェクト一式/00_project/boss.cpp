@@ -60,8 +60,8 @@ CBoss::~CBoss()
 CBoss * CBoss::Create(D3DXVECTOR3 pos)
 {
     // 変数宣言
-    CBoss *pBoss = NULL;
-    if (pBoss == NULL)
+    CBoss *pBoss = nullptr;
+    if (!pBoss)
     {
         // メモリの確保
         pBoss = new CBoss();
@@ -91,10 +91,10 @@ HRESULT CBoss::Load(void)
 void CBoss::Unload(void)
 {
     // テクスチャの破棄
-    if (m_pTexture != NULL)
+    if (m_pTexture)
     {
         m_pTexture->Release();
-        m_pTexture = NULL;
+        m_pTexture = nullptr;
     }
 }
 
@@ -111,8 +111,9 @@ HRESULT CBoss::Init(D3DXVECTOR3 pos)
     BindTexture(m_pTexture);
 
     CTerrain::SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));// 地形のスクロールを停止
-    //pSound->Stop();
-    //pSound->Play(CSound::SOUND_LABEL_BGM003);
+
+    pSound->Stop();
+    pSound->Play(CSound::SOUND_LABEL_BGM003);
 
     return S_OK;
 }
@@ -127,11 +128,10 @@ void CBoss::Uninit(void)
     CGame::SetState(CGame::STATE_END);// ゲーム終了
     for (int nCountEnemy = 0; nCountEnemy < MAX_BOSS_ENEMY; nCountEnemy++)
     {
-        if (m_pEnemy[nCountEnemy]!=NULL)
+        if (m_pEnemy[nCountEnemy])
         {
             m_pEnemy[nCountEnemy]->Uninit();
-            m_pEnemy[nCountEnemy] = NULL;
-
+            m_pEnemy[nCountEnemy] = nullptr;
         }
     }
 
@@ -163,7 +163,7 @@ void CBoss::Update(void)
     // ボスの周りの敵を回転
     for (int nCountEnemy = 0; nCountEnemy < MAX_BOSS_ENEMY; nCountEnemy++)
     {
-        if (m_pEnemy[nCountEnemy]==NULL)
+        if (!m_pEnemy[nCountEnemy])
         {
             m_pEnemy[nCountEnemy] = CEnemy_Type3::Create(pos,(float)nCountEnemy);
         }

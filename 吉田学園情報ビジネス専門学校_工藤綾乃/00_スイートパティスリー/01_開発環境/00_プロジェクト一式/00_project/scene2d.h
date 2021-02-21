@@ -43,16 +43,16 @@ public:
      void SetColor(D3DXCOLOR coror);
 
      // 当たり判定
-     CScene* JudgeFittingRectangle(CScene::OBJTYPE type);
+     CScene* CheckRectangleCollision(CScene::OBJTYPE type);
      CScene* CheckCircleCollision(CScene::OBJTYPE type);
 
 private:
     // メンバ変数
     LPDIRECT3DTEXTURE9       m_pTexture;      // テクスチャへのポインタ
-    LPDIRECT3DVERTEXBUFFER9  m_pVtxBuff;     // 頂点バッファへのポインタ
+    LPDIRECT3DVERTEXBUFFER9  m_pVtxBuff;      // 頂点バッファへのポインタ
 
-    D3DXVECTOR3              m_pos;        // ポリゴンの位置
-    D3DXVECTOR3              m_size;       // ポリゴンのサイズ
+    D3DXVECTOR3              m_pos;           // ポリゴンの位置
+    D3DXVECTOR3              m_size;          // ポリゴンのサイズ
 };
 
 #endif // !_SCENE2D_H_

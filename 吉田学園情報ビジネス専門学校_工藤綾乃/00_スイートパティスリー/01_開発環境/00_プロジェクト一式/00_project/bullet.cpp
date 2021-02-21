@@ -169,8 +169,7 @@ void CBullet::Update(void)
     if (pos.x < 0.0f + BULLET_SIZE_X / 2 ||
         pos.x > SCREEN_WIDTH - BULLET_SIZE_X / 2 ||
         pos.y < 0.0f + BULLET_SIZE_Y / 2 ||
-        pos.y > SCREEN_HEIGHT - BULLET_SIZE_Y / 2
-        )
+        pos.y > SCREEN_HEIGHT - BULLET_SIZE_Y / 2)
     {
         Uninit();
         return;
@@ -180,7 +179,7 @@ void CBullet::Update(void)
     CParticle_Effect::SetTrajectory(BULLET_EFFECT_POS,BULLET_EFFECT_MOVE, BULLET_EFFECT_FREDUCTION_MOVE, BULLET_EFFECT_COLOR, BULLET_EFFECT_SIZE, BULLET_EFFECT_FREDUCTION_SIZE, BULLET_EFFECT_FREDUCTION_ALPHA, BULLET_EFFECT_TYPE);
 
     //’nŒ`‚Æ‚Ì“–‚½‚è”»’è
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_TERRAIN);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_TERRAIN);
     if (pScene)
     {
         Uninit();

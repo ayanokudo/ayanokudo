@@ -47,7 +47,7 @@ CResult::CResult()
 {
     for (int nCount = 0; nCount < MAX_RESULT; nCount++)
     {
-        m_apPolygon[nCount] = NULL;
+        m_apPolygon[nCount] = nullptr;
     }
     m_IsClearedGame = false;
 }
@@ -65,7 +65,7 @@ CResult::~CResult()
 //=============================================================================
 CResult *CResult::Create(bool IsClearedGame)
 {
-    CResult *pResult = NULL;
+    CResult *pResult = nullptr;
     if (!pResult)
     {
         pResult = new CResult;
@@ -99,10 +99,10 @@ void CResult::Unload(void)
     // テクスチャの開放
     for (int nCount = 0; nCount < MAX_RESULT; nCount++)
     {
-        if (m_pTexture[nCount] != NULL)
+        if (m_pTexture[nCount])
         {
             m_pTexture[nCount]->Release();
-            m_pTexture[nCount] = NULL;
+            m_pTexture[nCount] = nullptr;
         }
     }
 }
@@ -126,7 +126,6 @@ HRESULT CResult::Init(bool IsClearedGame)
         m_apPolygon[nCount]->BindTexture(m_pTexture[nCount]);
     }
 
-
     return S_OK;
 }
 
@@ -142,7 +141,7 @@ void CResult::Uninit(void)
     // メモリの開放
     for (int nCount = 0; nCount < MAX_RESULT; nCount++)
     {
-        if (m_apPolygon[nCount] != NULL)
+        if (m_apPolygon[nCount])
         {
             m_apPolygon[nCount]->Uninit();
         }
@@ -164,11 +163,14 @@ void CResult::Update(void)
     {
         m_apPolygon[nCount]->Update();
     }
-    if (pInputKeyboard->GetKeyTrigger(DIK_SPACE) ||
-        pInputController->GetConTrigger(CInputController::BUTTON_10))
-    {
+
+    // キーが入力されたかどうか
+    bool IsStartKey = pInputKeyboard->GetKeyTrigger(DIK_SPACE) || pInputKeyboard->GetKeyTrigger(DIK_RETURN) || pInputController->GetConTrigger(CInputController::BUTTON_10);
+
+    // タイトル遷移
+    if (IsStartKey)
         CFade::SetFade(CManager::MODE_TITLE);
-    }
+
 }
 
 //=============================================================================

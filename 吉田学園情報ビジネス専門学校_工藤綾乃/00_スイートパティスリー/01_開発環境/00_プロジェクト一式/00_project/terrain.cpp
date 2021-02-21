@@ -11,7 +11,7 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define SCROLLING_SPEED (-2.0f)
+#define SCROLLING_SPEED (-2.0f)// 移動スピード
 
 //*****************************************************************************
 // 静的メンバ変数初期化
@@ -45,7 +45,7 @@ CTerrain::~CTerrain()
 //=============================================================================
 CTerrain *CTerrain::Create(D3DXVECTOR3 pos)
 {
-    CTerrain *pTerrain = NULL;
+    CTerrain *pTerrain = nullptr;
 
     if (!pTerrain)
     {
@@ -79,10 +79,10 @@ void CTerrain::Unload(void)
     // テクスチャの破棄
     for (int nCntEnemy = 0; nCntEnemy < TYPE_MAX; nCntEnemy++)
     {
-        if (m_pTexture[nCntEnemy] != NULL)
+        if (m_pTexture[nCntEnemy])
         {
             m_pTexture[nCntEnemy]->Release();
-            m_pTexture[nCntEnemy] = NULL;
+            m_pTexture[nCntEnemy] = nullptr;
         }
     }
 }
@@ -116,9 +116,7 @@ void CTerrain::Update(void)
 
     pos += m_move;
     SetPosition(pos);
-
 }
-
 
 //=============================================================================
 // [Draw] 描画処理

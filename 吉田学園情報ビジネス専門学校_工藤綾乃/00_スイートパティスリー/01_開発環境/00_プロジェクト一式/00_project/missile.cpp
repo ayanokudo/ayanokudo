@@ -27,7 +27,7 @@
 //*****************************************************************************
 // 静的メンバ変数初期化
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CMissile::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CMissile::m_pTexture = nullptr;
 char *CMissile::m_apTextureName = "data/TEXTURE/missile.png";
 
 //=============================================================================
@@ -37,7 +37,7 @@ CMissile::CMissile()
 {
     SetObjtype(OBJTYPE_BULLET);
     SetPosition(D3DXVECTOR3(100.0f, 100.0f, 100.0f));
-    m_pScene = NULL;
+    m_pScene = nullptr;
     SetSize(D3DXVECTOR3(MISSILE_SIZE_X, MISSILE_SIZE_Y,0.0f));
 }
 
@@ -53,9 +53,9 @@ CMissile::~CMissile()
 //=============================================================================
 CMissile *CMissile::Create(D3DXVECTOR3 pos, CScene* pScene)
 {
-    CMissile *pMissile = NULL;
+    CMissile *pMissile = nullptr;
 
-    if (pMissile==NULL)
+    if (!pMissile)
     {
         pMissile = new CMissile;
         pMissile->Init(pos, pScene);
@@ -136,7 +136,6 @@ void CMissile::Update(void)
     D3DXVECTOR3 pos = GetPosition();
     pos += MISSILE_MOVE;
 
-
     // 画面外に出たら削除
     if (pos.x < 0.0f + MISSILE_SIZE_X / 2 ||
         pos.x > SCREEN_WIDTH - MISSILE_SIZE_X / 2 ||
@@ -149,7 +148,7 @@ void CMissile::Update(void)
     }
 
     //敵との当たり判定
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_ENEMY);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_ENEMY);
     if (pScene)
     {
         ((CEnemy*)pScene)->Damage();
@@ -159,7 +158,7 @@ void CMissile::Update(void)
     }
     // 地形に当たった時は地形に沿って移動
     pScene = NULL;
-     pScene = JudgeFittingRectangle(CScene::OBJTYPE_TERRAIN);
+     pScene = CheckRectangleCollision(CScene::OBJTYPE_TERRAIN);
     if (pScene)
     {   
         pos.x += 10.0f;

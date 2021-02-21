@@ -39,6 +39,8 @@
 #define ITEM_001_EFFECT_FREDUCTION_ALPHA (0.2f)                                                      // 軌跡エフェクトのアルファ値減少量の設定
 #define ITEM_001_EFFECT_TYPE             CParticle_Effect::PARTICLE_TYPE_CIRCLE                      // 軌跡エフェクトのタイプ
 
+#define ADD_SCORE (100)// スコアの上がる量
+
 //*****************************************************************************
 // 静的メンバ変数
 //*****************************************************************************
@@ -71,7 +73,7 @@ CItem::~CItem()
 //=============================================================================
 CItem * CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, TYPE type, bool bIsFlip)
 {
-    CItem *pItem = NULL;
+    CItem *pItem = nullptr;
     if (!pItem)
     {
         pItem = new CItem;
@@ -105,10 +107,10 @@ void CItem::Unload(void)
     for (int nCount = 0; nCount < TYPE_MAX; nCount++)
     {
         // テクスチャの破棄
-        if (m_apTexture[nCount] != NULL)
+        if (m_apTexture[nCount])
         {
             m_apTexture[nCount]->Release();
-            m_apTexture[nCount] = NULL;
+            m_apTexture[nCount] = nullptr;
         }
     }
 }
@@ -153,7 +155,6 @@ void CItem::Update(void)
     CScene2D::Update();
 
     //自機との当たり判定
-
     switch (m_type)
     {
         // パワーアップの処理
@@ -180,12 +181,12 @@ void CItem::Draw(void)
 //=============================================================================
 void CItem::PowerUp(void)
 {
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_PLAYER);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_PLAYER);
     if (pScene)
     {
         // スコア追加
         CScore *pScore = CGame::GetScore();
-        pScore->SetScore(100);
+        pScore->SetScore(ADD_SCORE);
 
         // SEを鳴らす
         CSound *pSound = CManager::GetSound();
@@ -209,7 +210,6 @@ void CItem::RecoverEnergy(void)
     if (m_bIsFlip)
     {// 上下反転時ポリゴンの下にエフェクト表示
          CParticle_Effect::SetTrajectory(ITEM_001_EFFECT_FLIP_POS, ITEM_001_EFFECT_FLIP_MOVE, ITEM_001_EFFECT_FREDUCTION_MOVE, ITEM_001_EFFECT_COLOR, ITEM_001_EFFECT_SIZE, ITEM_001_UI_EFFECT_FREDUCTION_SIZE, ITEM_001_EFFECT_FREDUCTION_ALPHA, ITEM_001_EFFECT_TYPE);
-
     }
     else
     {
@@ -218,7 +218,7 @@ void CItem::RecoverEnergy(void)
 
     // プレイヤーと当たったらプレイヤーのエネルギーを回復
     CPlayer *pPlayer = CGame::GetPlayer();
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_PLAYER);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_PLAYER);
     if (pScene)
     {
         int nEnergy = pPlayer->GetEnergy();

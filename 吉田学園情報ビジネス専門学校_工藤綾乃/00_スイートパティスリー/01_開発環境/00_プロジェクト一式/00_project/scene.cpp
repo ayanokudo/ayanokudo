@@ -10,27 +10,33 @@
 //*****************************************************************************
 // 静的メンバ変数初期化
 //*****************************************************************************
-CScene* CScene::m_apScene[MAX_POLYGON] = {};
-int CScene::m_nNumAll = 0;
+CScene *CScene::m_pTop[PRIORITY_MAX] = {};// 先頭のオブジェクトへのポインタ
+CScene *CScene::m_pCur[PRIORITY_MAX] = {};// 現在のオブジェクトへのポインタ
 
 //=============================================================================
 // [CScene] コンストラクタ
+// 引数
+// priority : 描画優先順位
 //=============================================================================
-CScene::CScene()
+CScene::CScene(PRIORITY priority)
 {
-    for (int nNumPolygon = 0; nNumPolygon < MAX_POLYGON; nNumPolygon++)
+    // 先頭のアドレスがなかった場合
+    if (!m_pTop[priority])
     {
-        if (m_apScene[nNumPolygon] == NULL)
-        {
-            m_apScene[nNumPolygon] = this;
-
-            m_nIndex = nNumPolygon;//番号を保存
-
-            m_nNumAll++; // 総数を増やす
-
-            break;// 1体ずつ設定するためにループ抜ける
-        }
+        // 自分自身を先頭にする
+        m_pTop[priority] = this;
+        m_pPrev = NULL;
     }
+    else
+    {
+        m_pPrev = m_pCur[priority];// 前のオブジェクトを設定
+        m_pPrev->m_pNext = this;
+    }
+    m_pCur[priority] = this;// 最後のオブジェクトを自分自身にする
+    m_pNext = NULL;// 自分が最後なのでNULLにする
+
+    m_Priority = priority;
+    m_bDeath = false;
 }
 
 //=============================================================================
@@ -46,11 +52,35 @@ CScene::~CScene()
 //=============================================================================
 void CScene::UpdateAll(void)
 {
-    for (int nNumPolygon = 0; nNumPolygon < MAX_POLYGON; nNumPolygon++)
+    for (int nCntPriority = 0; nCntPriority < PRIORITY_MAX; nCntPriority++)
     {
-        if (m_apScene[nNumPolygon] != NULL)
+        CScene *pScene = m_pTop[nCntPriority];// 先頭のアドレスを取得
+        while (pScene)
         {
-            m_apScene[nNumPolygon]->Update();
+            // 次の更新処理を行うオブジェクトを保存しておく(Updeteで今のオブジェクトを破棄することがあるため)
+            CScene *pIndex = pScene->m_pNext;
+
+            if (!pScene->m_bDeath)
+                pScene->Update();// オブジェクトの更新を行う
+
+            pScene = pIndex;// 次のオブジェクトを取得
+        }
+    }
+
+    // フラグ確認
+    for (int nCntPriority = 0; nCntPriority < PRIORITY_MAX; nCntPriority++)
+    {
+        CScene *pScene = m_pTop[nCntPriority];// 先頭のアドレスを取得
+        while (pScene)
+        {
+            // 次の更新処理を行うオブジェクトを保存しておく(Updeteで今のオブジェクトを破棄することがあるため)
+            CScene *pIndex = pScene->m_pNext;
+
+            // 死亡フラグを立っていたら削除
+            if (pScene->m_bDeath)
+                pScene->ReconnectList();
+
+            pScene = pIndex;// 次のオブジェクトを取得
         }
     }
 }
@@ -60,36 +90,53 @@ void CScene::UpdateAll(void)
 //=============================================================================
 void CScene::DrawAll(void)
 {
-    for (int nCountType = 0; nCountType < OBJTYPE_MAX; nCountType++)
+    for (int nCntPriority = 0; nCntPriority < PRIORITY_MAX; nCntPriority++)
     {
-        for (int nNumPolygon = 0; nNumPolygon < MAX_POLYGON; nNumPolygon++)
-        {
-            if (m_apScene[nNumPolygon] != NULL)
-            {
-                if (m_apScene[nNumPolygon]->m_objtype == nCountType)
-                {
-                    m_apScene[nNumPolygon]->Draw();
-                }
+        CScene *pScene = m_pTop[nCntPriority];// 先頭のアドレスを取得
+        while (pScene)
+        {// 次のオフジェクトの保存
+         // 次の更新処理を行うオブジェクトを保存しておく(Updeteで今のオブジェクトを破棄することがあるため)
+            CScene *pIndex = pScene->m_pNext;
 
-            }
+            // 死亡フラグチェック
+            if (!pScene->m_bDeath)
+                pScene->Draw();               // オブジェクトの描画を行う
+
+            pScene = pIndex;              // 次のオブジェクトを取得
         }
     }
 }
 
 //=============================================================================
-// [Release] メモリの開放
+// [ReconnectList] リストの再接続
 //=============================================================================
-void CScene::Release(void)
+void CScene::ReconnectList(void)
 {
-    if (m_apScene[m_nIndex] != NULL)
+    // 自分が先頭のアドレスの場合次のオブジェクトに先頭情報を渡す
+    if (m_pTop[m_Priority] == this)
     {
-        int nID = m_nIndex;// delete後にm_nIndexが使えなくなるので番号を保存
-
-        // メモリを開放してポインタの中身をNULLにする
-        delete m_apScene[m_nIndex];
-        m_apScene[nID] = NULL;
-
+        m_pTop[m_Priority] = m_pNext;// 次のオブジェクトを先頭にする
+        if (m_pTop[m_Priority])
+            m_pTop[m_Priority]->m_pPrev = nullptr;// 先頭の前のオブジェクトの情報をNULLにする
     }
+    else
+    {// 自分が先頭ではない場合
+        m_pPrev->m_pNext = m_pNext;
+    }
+    // 自分が現在のアドレスの場合前のオブジェクトに現在の情報を渡す
+    if (m_pCur[m_Priority] == this)
+    {
+        m_pCur[m_Priority] = m_pPrev;
+        if (m_pPrev)
+        {
+            m_pCur[m_Priority]->m_pNext = nullptr;
+        }
+    }
+    else
+    {// 自分が最後ではない場合
+        m_pNext->m_pPrev = m_pPrev;
+    }
+        delete this;
 }
 
 //=============================================================================
@@ -97,12 +144,19 @@ void CScene::Release(void)
 //=============================================================================
 void CScene::ReleaseAll(void)
 {
-    for (int nNumPolygon = 0; nNumPolygon < MAX_POLYGON; nNumPolygon++)
+    // フラグ確認
+    for (int nCntPriority = 0; nCntPriority < PRIORITY_MAX; nCntPriority++)
     {
-        if (m_apScene[nNumPolygon] != NULL)
+        CScene *pScene = m_pTop[nCntPriority];// 先頭のアドレスを取得
+        while (pScene)
         {
-            m_apScene[nNumPolygon]->Release();
+            // 次の更新処理を行うオブジェクトを保存
+            CScene *pIndex = pScene->m_pNext;
+
+                pScene->Uninit();
+                pScene->ReconnectList();
+
+            pScene = pIndex;// 次のオブジェクトを取得
         }
     }
 }
-

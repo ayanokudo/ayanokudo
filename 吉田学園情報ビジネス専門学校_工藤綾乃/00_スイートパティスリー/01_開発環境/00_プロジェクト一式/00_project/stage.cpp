@@ -24,7 +24,7 @@ STAGEDATA CStage::m_pStageData[MAX_POLYGON] = {};
 //******************************************************************************
 // マクロ定義
 //******************************************************************************
-#define FILE_NAME "data/TXT/stage001.txt"
+#define FILE_NAME "data/TXT/stage001.txt"       // 読み込むステージファイル
 
 //=============================================================================
 // [CStage] コンストラクタ
@@ -165,7 +165,7 @@ void CStage::Update(void)
             // アイテムを出現させる
         case CScene::OBJTYPE_ITEM:
             // エネルギー回復アイテム生成
-            CItem::Create(m_pStageData[m_nIndex].pos, D3DXVECTOR3(-2.0f, 0.0f, 0.0f),CItem::TYPE_001, m_pStageData[m_nIndex].nFlip);
+            CItem::Create(m_pStageData[m_nIndex].pos, D3DXVECTOR3(-2.0f, 0.0f, 0.0f),CItem::TYPE_001,m_pStageData[m_nIndex].nFlip);
             break;
 
             // ボスを出現させる

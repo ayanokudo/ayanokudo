@@ -58,21 +58,19 @@ COption::~COption()
 
 }
 
-
 //=============================================================================
 // [Create] プレイヤーの生成
 //=============================================================================
 COption * COption::Create(D3DXVECTOR3 pos)
 {
-    COption *pOption = NULL;
-    if (pOption==NULL)
+    COption *pOption = nullptr;
+    if (!pOption)
     {
         pOption = new COption;
         pOption->Init(pos);
     }
     return pOption;
 }
-
 
 //=============================================================================
 // [Load] テクスチャの読み込み
@@ -88,20 +86,18 @@ HRESULT COption::Load(void)
     return S_OK;
 }
 
-
 //=============================================================================
 // [Unload] テクスチャの破棄
 //=============================================================================
 void COption::Unload(void)
 {
     // テクスチャの開放
-    if (m_pTexture != NULL)
+    if (m_pTexture)
     {
         m_pTexture->Release();
-        m_pTexture = NULL;
+        m_pTexture = nullptr;
     }
 }
-
 
 //=============================================================================
 // [Init] 初期化処理
@@ -150,11 +146,11 @@ void COption::Update(void)
     CInputController *pInputController = CManager::GetInputController();
 
     // 敵に当たった時敵にダメージを与える
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_ENEMY);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_ENEMY);
     if (pScene)
     {
         ((CEnemy*)pScene)->Damage();
-        pScene = NULL;
+        pScene = nullptr;
     }
 
     // スペースキーor2ボタンで弾を発射

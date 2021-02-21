@@ -33,6 +33,7 @@ CTriangle::CTriangle(D3DXVECTOR3 pos)
     m_fRenge = 1.0f;
     m_fRadian = 0.0f;
 }
+
 //=============================================================================
 // [~CTriangle]デストラクタ
 //=============================================================================
@@ -118,7 +119,7 @@ void CTriangle::Uninit(void)
         m_pVtxBuff->Release();
         m_pVtxBuff = NULL;
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================
@@ -164,7 +165,6 @@ void CTriangle::Draw(void)
 //=============================================================================
 void CTriangle::Rotation(float fRadian)
 {
-
     D3DXVECTOR3 vertex1 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);    // 三角形の上
     D3DXVECTOR3 vertex2 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);    // 三角形の右
     D3DXVECTOR3 vertex3 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);    // 三角形の左

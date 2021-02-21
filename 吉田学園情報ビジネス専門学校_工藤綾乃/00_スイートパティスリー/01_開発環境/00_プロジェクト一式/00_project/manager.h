@@ -28,6 +28,8 @@ class CFade;
 //*****************************************************************************
 class CManager
 {
+    static CManager *m_pInstance;     // インスタンス
+
 public:
     // モードの種類
     typedef enum
@@ -44,6 +46,8 @@ public:
     CManager();
     ~CManager();
 
+    static CManager *Create(HINSTANCE hInstance, HWND hWnd, bool bWindow);
+
     HRESULT Init(HINSTANCE hInstance, HWND hWnd, bool bWindow);
     void Uninit(void);
     void Update(void);
@@ -53,6 +57,9 @@ public:
     static CRenderer* GetRenderer(void) { return m_pRenderer; }
     static CInputKeyboard* GetInputKeyboard(void) { return (CInputKeyboard*)m_pInputKeyboard; }
     static CInputController* GetInputController(void) { return (CInputController*)m_InputController; }
+
+    // インスタンスのゲッタ
+    static CManager* GetInstance(void) { return m_pInstance; };
 
     // モードのセッタ/ゲッタ
     static void SetMode(MODE mode);

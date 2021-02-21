@@ -29,22 +29,22 @@
 // マクロ定義
 //*****************************************************************************
 #define TEXTURE_PLAYER "data/TEXTURE/player000.png"     // プレイヤーのテクスチャ名
-#define PLAYER_MOVE        (4.0f)                            // プレイヤーの移動量
-#define SCROLL_MOVE        (0.0005f)                          // プレイヤーの動きに合わせて動くスクロールの速度
-#define SCROLL_MOVE_LEFT   (0.0001f)                     // 左に入力した時のプレイヤーの動きに合わせて動くスクロールの速度
+#define PLAYER_MOVE        (4.0f)                       // プレイヤーの移動量
+#define SCROLL_MOVE        (0.0005f)                    // プレイヤーの動きに合わせて動くスクロールの速度
+#define SCROLL_MOVE_LEFT   (0.0001f)                    // 左に入力した時のプレイヤーの動きに合わせて動くスクロールの速度
 
-#define PLAYER_SIZE_X      (60.0f)                           // プレイヤーの横の大きさ
-#define PLAYER_SIZE_Y      (45.0f)                           // プレイヤーの縦の大きさ
+#define PLAYER_SIZE_X      (60.0f)                      // プレイヤーの横の大きさ
+#define PLAYER_SIZE_Y      (45.0f)                      // プレイヤーの縦の大きさ
 
 #define PLAYER_LIMIT_POS_UP    (150.0f)                                   // プレイヤーの移動範囲(上方向)
-#define PLAYER_LIMIT_POS_DOWN  (630.0f)                                    // プレイヤーの移動範囲(下方向)
+#define PLAYER_LIMIT_POS_DOWN  (630.0f)                                   // プレイヤーの移動範囲(下方向)
 #define PLAYER_LIMIT_POS_RIGHT (SCREEN_WIDTH - PLAYER_SIZE_Y / 2.0f)      // プレイヤーの移動範囲(左方向)
 #define PLAYER_LIMIT_POS_LEFT  (PLAYER_SIZE_Y / 2.0f)                     // プレイヤーの移動範囲(右方向)
 
 #define PLAYER_FLASHING_INTERVAL (6)                    // 無敵時間中の点滅の間隔
-#define LIMIT_SPEED   (5)         // スピードのパワーアップ限界値
-#define SPEED_MOVE    (2.0f)      // スピードアップしたときに上がる速度
-#define LIMIT_MISSILE (1)         // ミサイルのパワーアップ限界値
+#define LIMIT_SPEED   (5)                               // スピードのパワーアップ限界値
+#define SPEED_MOVE    (1.4f)                            // スピードアップしたときに上がる速度
+#define LIMIT_MISSILE (1)                               // ミサイルのパワーアップ限界値
 
 // エフェクトの設定
 #define PLAYER_EFFECT_POS              D3DXVECTOR3(pos.x - PLAYER_SIZE_X / 2,pos.y,0.0f)         // 軌跡エフェクトの出現位置の設定
@@ -258,7 +258,7 @@ void CPlayer::Update(void)
             m_pEnergyUI->Update();
 
             // 地形との当たり判定
-            CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_TERRAIN);
+            CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_TERRAIN);
             if (pScene)
             {
                 Damage();
@@ -267,9 +267,9 @@ void CPlayer::Update(void)
             }
 
             // 弾との当たり判定
-            pScene = JudgeFittingRectangle(CScene::OBJTYPE_BULLET);
+            pScene = CheckRectangleCollision(CScene::OBJTYPE_BULLET);
             if (pScene)
-            {   //プレイヤーの弾だった時
+            {   //敵の弾だった時
                 if (((CBullet*)pScene)->GetType() == CBullet::TYPE_ENEMY)
                 {
                     Damage();
@@ -521,6 +521,12 @@ void CPlayer::Damage(void)
     // 変数宣言
     D3DXVECTOR3 pos = GetPosition();
     CSound *pSound = CManager::GetSound();
+
+    // シールドがある場合スキップ
+    if (m_bUsingShield)
+    {
+        return;
+    }
 
     // 残機の設定
     m_nLife--;

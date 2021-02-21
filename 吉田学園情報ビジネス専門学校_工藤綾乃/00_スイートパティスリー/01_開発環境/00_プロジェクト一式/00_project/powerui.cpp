@@ -27,9 +27,8 @@ LPDIRECT3DTEXTURE9 CPowerUI::m_pTexture = NULL;
 //=============================================================================
 CPowerUI::CPowerUI()
 {
-
-    m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    m_size = D3DXVECTOR3(POWERUI_SIZE_X, POWERUI_SIZE_Y, 0.0f);
+    m_pos ={ 0.0f, 0.0f, 0.0f };
+    m_size ={ POWERUI_SIZE_X, POWERUI_SIZE_Y, 0.0f };
     SetObjtype(OBJTYPE_UI);
     for (int nCount = 0; nCount < MAX_POWERUI; nCount++)
     {
@@ -50,7 +49,7 @@ CPowerUI::~CPowerUI()
 //=============================================================================
 CPowerUI * CPowerUI::Create(void)
 {
-    CPowerUI *pPowerUI = NULL;
+    CPowerUI *pPowerUI = nullptr;
     if (!pPowerUI)
     {
         pPowerUI = new CPowerUI;
@@ -79,10 +78,10 @@ HRESULT CPowerUI::Load(void)
 void CPowerUI::Unload(void)
 {
     // テクスチャの開放
-    if (m_pTexture != NULL)
+    if (m_pTexture)
     {
         m_pTexture->Release();
-        m_pTexture = NULL;
+        m_pTexture = nullptr;
     }
 }
 
@@ -110,14 +109,14 @@ void CPowerUI::Uninit(void)
 {
     for (int nCount = 0; nCount < MAX_POWERUI; nCount++)
     {
-        if (m_apPolygon[nCount] != NULL)
+        if (m_apPolygon[nCount])
         {
             m_apPolygon[nCount]->Uninit();
             delete m_apPolygon[nCount];
-            m_apPolygon[nCount] = NULL;
+            m_apPolygon[nCount] = nullptr;
         }
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================
@@ -144,12 +143,18 @@ void CPowerUI::Draw(void)
 //=============================================================================
 void CPowerUI::ChangeColor(void)
 {
-    //自機との当たり判定
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+    // 変数宣言
+    CScene *pScene = nullptr;
+    // 先頭のアドレスを取得
+    pScene = CScene::GetTop(PRIORITY_MIDDLE_VIEW);
+    while (pScene)
     {
-        CScene *pScene = GetSceneObject(nCount);
-        if (pScene != NULL)
+        // 次のアドレスを保存
+        CScene *pNext = pScene->GetNext();
+        if (pScene)
         {
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
             if (pScene->GetObjectType() == CScene::OBJTYPE_PLAYER)
             {
                 int nPowerUp = ((CPlayer*)pScene)->GetPowerUp();
@@ -167,5 +172,7 @@ void CPowerUI::ChangeColor(void)
                 }
             }
         }
+        // 次のアドレスを取得
+        pScene = pNext;
     }
 }

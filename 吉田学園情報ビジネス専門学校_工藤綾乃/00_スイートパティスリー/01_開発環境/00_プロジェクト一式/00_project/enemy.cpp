@@ -70,8 +70,8 @@ CEnemy::~CEnemy()
 CEnemy * CEnemy::Create(void)
 {
     // 変数宣言
-    CEnemy *pEnemy = NULL;
-    if (pEnemy == NULL)
+    CEnemy *pEnemy = nullptr;
+    if (!pEnemy)
     {
         // メモリの確保
         pEnemy = new CEnemy();
@@ -99,10 +99,10 @@ HRESULT CEnemy::Load(void)
 void CEnemy::Unload(void)
 {
     // テクスチャの破棄
-    if (m_pTexture != NULL)
+    if (m_pTexture)
     {
         m_pTexture->Release();
-        m_pTexture = NULL;
+        m_pTexture = nullptr;
     }
 }
 
@@ -112,7 +112,6 @@ void CEnemy::Unload(void)
 HRESULT CEnemy::Init(void)
 {
     // 各メンバ変数初期化
-
     CScene2D::Init();
 
     // テクスチャの割り当て
@@ -143,27 +142,26 @@ void CEnemy::Update(void)
     m_nCntLaserInterval--;
 
     // プレイヤーとの当たり判定
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_PLAYER);
-        if (pScene)
-        {
-            // プレイヤーにダメージを与える
-            ((CPlayer*)pScene)->Damage();
-            pScene = NULL;
-        }
-    if (m_State==STATE_NORMAL)
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_PLAYER);
+    if (pScene)
+    {
+        // プレイヤーにダメージを与える
+        ((CPlayer*)pScene)->Damage();
+        pScene = nullptr;
+    }
+    if (m_State == STATE_NORMAL)
     {
         // 弾との当たり判定
-        pScene = JudgeFittingRectangle(CScene::OBJTYPE_BULLET);
+        pScene = CheckRectangleCollision(CScene::OBJTYPE_BULLET);
         if (pScene)
         {   //プレイヤーの弾だった時
-            if (((CBullet*)pScene)->GetType()==CBullet::TYPE_PLAYER)
+            if (((CBullet*)pScene)->GetType() == CBullet::TYPE_PLAYER)
             {
-            Damage();
-            pScene->Uninit();
-            pScene = NULL;
+                Damage();
+                pScene->Uninit();
+                pScene = nullptr;
             }
         }
-
     }
 
     // 画面外に出たら削除
@@ -175,8 +173,6 @@ void CEnemy::Update(void)
     {
         Uninit();
     }
-
-
 }
 
 //=============================================================================
@@ -231,28 +227,26 @@ void CEnemy::Damage(void)
 // [CheckSurvival] 編隊の生存チェック
 //=============================================================================
 void CEnemy::CheckSurvival(void)
- {
+{
     // 隊列番号が0以上のとき
-    if (m_nFormaitionNum>=0)
+    if (m_nFormaitionNum >= 0)
     {
-
         int nCntSurvival = 0;   // 編隊の敵生存数
         D3DXVECTOR3 pos = GetPosition();
         // 編隊番号チェック
-        for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+        CScene *pScene = GetTop(PRIORITY_MIDDLE_VIEW);
+        while (pScene)
         {
-            CScene *pEnemy = GetSceneObject(nCount);
-            if (pEnemy != NULL)
-            {
+            CScene *pIndex = pScene->GetNext();
 
-                if (pEnemy->GetObjectType() == CScene::OBJTYPE_ENEMY)
-                {
-                    if (m_nFormaitionNum == ((CEnemy*)pEnemy)->GetFormaitionNum())
-                    {// 生存数追加
-                        nCntSurvival++;
-                    }
+            if (pScene->GetObjectType() == OBJTYPE_ENEMY)
+            {
+                if (m_nFormaitionNum == ((CEnemy*)pScene)->GetFormaitionNum())
+                {// 生存数追加
+                    nCntSurvival++;
                 }
             }
+            pScene = pIndex;// 次のオブジェクトを取得
         }
 
         // 当たった敵が最後の編隊の場合
@@ -265,7 +259,7 @@ void CEnemy::CheckSurvival(void)
             pPlayer->SetEnergy(nEnergy);
 
             // パワーアップアイテム生成
-            CItem::Create(pos, D3DXVECTOR3(-2.0f, 0.0f, 0.0f), CItem::TYPE_000 ,false);
+            CItem::Create(pos, D3DXVECTOR3(-2.0f, 0.0f, 0.0f), CItem::TYPE_000, false);
         }
     }
 }

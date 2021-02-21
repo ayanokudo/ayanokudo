@@ -61,7 +61,7 @@ CTitle::~CTitle()
 //=============================================================================
 CTitle * CTitle::Create(void)
 {
-    CTitle *pTitle = NULL;
+    CTitle *pTitle = nullptr;
     if (!pTitle)
     {
         pTitle = new CTitle;
@@ -81,8 +81,8 @@ HRESULT CTitle::Load(void)
 
     for (int nCount = 0; nCount < TITLE_MAX; nCount++)
     {
-    // テクスチャの生成
-    D3DXCreateTextureFromFile(pDevice, m_aTextureDate[nCount].textureName, &m_pTexture[nCount]);
+        // テクスチャの生成
+        D3DXCreateTextureFromFile(pDevice, m_aTextureDate[nCount].textureName, &m_pTexture[nCount]);
     }
     return S_OK;
 }
@@ -95,11 +95,11 @@ void CTitle::Unload(void)
     // テクスチャの開放
     for (int nCount = 0; nCount < TITLE_MAX; nCount++)
     {
-    if (m_pTexture[nCount]!= NULL)
-    {
-        m_pTexture[nCount]->Release();
-        m_pTexture[nCount] = NULL;
-    }
+        if (m_pTexture[nCount])
+        {
+            m_pTexture[nCount]->Release();
+            m_pTexture[nCount] = nullptr;
+        }
     }
 }
 
@@ -123,7 +123,7 @@ HRESULT CTitle::Init(void)
     }
     return S_OK;
 }
- 
+
 //=============================================================================
 // [Uninit] 終了処理
 //=============================================================================
@@ -136,14 +136,13 @@ void CTitle::Uninit(void)
     // メモリの開放
     for (int nCount = 0; nCount < TITLE_MAX; nCount++)
     {
-        if (m_apPolygon[nCount] != NULL)
+        if (m_apPolygon[nCount])
         {
             m_apPolygon[nCount]->Uninit();
         }
     }
 
     CScene::ReleaseAll();
-
     CTitle::Unload();
 }
 
@@ -157,8 +156,7 @@ void CTitle::Update(void)
     CInputController *pInputController = CManager::GetInputController();
     m_nCountWait++;
 
-    // //ランダムで星を降らせる
-
+     //ランダムで星を降らせる
     if (rand() % 30 == 0)
     {
         CStar::Create(D3DXVECTOR3(rand() % 1000, -50.0f, 0.0f), D3DXVECTOR3(rand() % 3 + 1, rand() % 3 + 1, 0.0f));
@@ -168,10 +166,12 @@ void CTitle::Update(void)
     UpdatePolygon();
     if (m_nCountWait >= TITLE_LATENCY)
     {// タイトル画面最初の1秒は待機
+
+        // キーが入力されたかどうか
+        bool IsStartKey = pInputKeyboard->GetKeyTrigger(DIK_SPACE) ||pInputKeyboard->GetKeyTrigger(DIK_RETURN) ||pInputController->GetConTrigger(CInputController::BUTTON_10);
+
         // スペースキーを押したときゲーム画面へ
-        if (pInputKeyboard->GetKeyTrigger(DIK_SPACE) ||
-            pInputKeyboard->GetKeyTrigger(DIK_RETURN) ||
-            pInputController->GetConTrigger(CInputController::BUTTON_10))
+        if (IsStartKey)
         {
             // サウンド鳴らす
             CSound *pSound = CManager::GetSound();
@@ -180,7 +180,6 @@ void CTitle::Update(void)
             CFade::SetFade(CManager::MODE_TUTORIAL);
         }
     }
-
 }
 
 //=============================================================================
@@ -209,6 +208,6 @@ void CTitle::UpdatePolygon(void)
             m_apPolygon[nCountPolygon]->SetColor(m_color);
             break;
         }
-    m_apPolygon[nCountPolygon]->Update();
+        m_apPolygon[nCountPolygon]->Update();
     }
 }

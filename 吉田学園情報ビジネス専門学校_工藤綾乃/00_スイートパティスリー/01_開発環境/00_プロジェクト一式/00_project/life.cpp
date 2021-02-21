@@ -119,7 +119,7 @@ void CLife::Uninit(void)
             m_apPolygon[nCount] = NULL;
         }
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================

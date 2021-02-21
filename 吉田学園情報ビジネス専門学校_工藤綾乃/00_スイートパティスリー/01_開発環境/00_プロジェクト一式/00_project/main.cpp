@@ -13,8 +13,9 @@
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
-#define CLASS_NAME      "AppClass"          // ウインドウのクラス名
+#define CLASS_NAME      "AppClass"                // ウインドウのクラス名
 #define WINDOW_NAME     "スイートパティスリー"    // ウインドウのキャプション名
+#define SCREEN_MODE TRUE                          // スクリーンモード
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -77,7 +78,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     WSADATA WsaData;
 
-    // Winsockの初期化(成功すると０を孵す)
+    // Winsockの初期化(成功すると0を返す)
     int nErr = WSAStartup(WINSOCK_VERSION, &WsaData);
     if (nErr)
     {// 初期化に失敗した
@@ -86,10 +87,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // マネージャーの初期化
     CManager *pManager;
-    pManager = new CManager;
-
-    // 第三引数をFALSEにするとフルスクリーン
-    pManager->Init(hInstance,hWnd,TRUE);
+    pManager = CManager::Create(hInstance, hWnd, SCREEN_MODE);
 
     // 分解能を設定
     timeBeginPeriod(1);

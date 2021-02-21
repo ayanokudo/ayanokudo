@@ -27,7 +27,7 @@
 //*****************************************************************************
 // 静的メンバ変数初期化
 //*****************************************************************************
-LPDIRECT3DTEXTURE9 CLaser::m_pTexture = NULL;
+LPDIRECT3DTEXTURE9 CLaser::m_pTexture = nullptr;
 char *CLaser::m_apTextureName = "data/TEXTURE/cream000.png";
 
 //=============================================================================
@@ -54,7 +54,7 @@ CLaser::~CLaser()
 //=============================================================================
 CLaser *CLaser::Create(D3DXVECTOR3 pos, CScene2D* pScene2D)
 {
-    CLaser *pLaser = NULL;
+    CLaser *pLaser = nullptr;
 
     if (!pLaser)
     {
@@ -127,7 +127,7 @@ void CLaser::Update(void)
     {
         // レーザーの長さが最大になるまで追従
         D3DXVECTOR3 pObjpos = m_pScene2D->GetPosition();
-        pos = D3DXVECTOR3(pObjpos.x+ size.x / 2, pObjpos.y, 0.0f);
+        pos = D3DXVECTOR3(pObjpos.x + size.x / 2, pObjpos.y, 0.0f);
         SetPosition(pos);
 
         // レーザーを横に伸ばす
@@ -148,7 +148,7 @@ void CLaser::Update(void)
     CScene2D::Update();
 
     //敵との当たり判定
-    CScene *pScene = JudgeFittingRectangle(CScene::OBJTYPE_ENEMY);
+    CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_ENEMY);
     if (pScene)
     {
         if (((CEnemy*)pScene)->GetnCntLaserInterval() <= 0)
@@ -156,7 +156,6 @@ void CLaser::Update(void)
             ((CEnemy*)pScene)->Damage();
             ((CEnemy*)pScene)->SetCntLaserInterval(LASER_DAMAGE_INTERVAL);
         }
-
     }
 
     // 画面外に出たら削除

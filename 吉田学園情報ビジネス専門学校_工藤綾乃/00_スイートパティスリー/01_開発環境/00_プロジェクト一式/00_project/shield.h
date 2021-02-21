@@ -42,6 +42,7 @@ private:
     static LPDIRECT3DTEXTURE9       m_pTexture;       // テクスチャへのポインタ
     static char                    *m_pTextureName;   // テクスチャのファイル名
     int                             m_nDurableValue;  // シールドの耐久値
-    CPlayer*                         m_pPlayer;        // シールドの持ち主へのポインタ
+    unsigned int                             m_nInterval;      // インターバル
+    CPlayer*                         m_pPlayer;       // シールドの持ち主へのポインタ
 };
 #endif // !_SHIELD_H_

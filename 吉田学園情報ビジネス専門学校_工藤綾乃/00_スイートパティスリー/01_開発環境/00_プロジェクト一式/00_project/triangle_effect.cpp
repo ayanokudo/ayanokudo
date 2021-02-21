@@ -91,7 +91,7 @@ void CTriangle_Effect::Uninit(void)
             m_pTriangle[nCntEffect] = NULL;
         }
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================
@@ -126,12 +126,14 @@ void CTriangle_Effect::Update(void)
     }
 
     //プレイヤーの情報取得
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+    CScene *pScene = CScene::GetTop(PRIORITY_MIDDLE_VIEW);
+    while (pScene != NULL)
     {
-        CScene *pScene = GetSceneObject(nCount);
         if (pScene != NULL)
         {
-            if (pScene->GetObjectType() == CScene::OBJTYPE_PLAYER)
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
+            if (pScene->GetObjectType() == OBJTYPE_PLAYER)
             {
                 if (m_nLife <= 0 && ((CPlayer*)pScene)->GetLife() > 0)
                 {
@@ -148,6 +150,8 @@ void CTriangle_Effect::Update(void)
                     Uninit();
                 }
             }
+            // 次のアドレスを取得
+            pScene = pNext;
         }
     }
 }
@@ -157,8 +161,9 @@ void CTriangle_Effect::Update(void)
 //=============================================================================
 void CTriangle_Effect::Draw(void)
 {
-    
+
 }
+
 //=============================================================================
 // [SetMove] 移動する位置の設定
 // 引数

@@ -19,16 +19,17 @@
 //*****************************************************************************
 // 静的メンバ変数の初期化
 //*****************************************************************************
+CManager *CManager::m_pInstance = nullptr;
 CManager::MODE    CManager::m_mode            = MODE_NONE;
-CRenderer        *CManager::m_pRenderer       = NULL;
-CInputKeyboard   *CManager::m_pInputKeyboard  = NULL;
-CInputController *CManager::m_InputController = NULL;
-CSound           *CManager::m_pSound          = NULL;
-CTitle           *CManager::m_pTitle          = NULL;       // タイトル画面のポインタ
-CTutorial        *CManager::m_pTutorial       = NULL;       // チュートリアル画面のポインタ
-CGame            *CManager::m_pGame           = NULL;
-CRanking         *CManager::m_pRanking        = NULL;
-CResult          *CManager::m_pResult         = NULL;
+CRenderer        *CManager::m_pRenderer       = nullptr;
+CInputKeyboard   *CManager::m_pInputKeyboard  = nullptr;
+CInputController *CManager::m_InputController = nullptr;
+CSound           *CManager::m_pSound          = nullptr;
+CTitle           *CManager::m_pTitle          = nullptr;       // タイトル画面のポインタ
+CTutorial        *CManager::m_pTutorial       = nullptr;       // チュートリアル画面のポインタ
+CGame            *CManager::m_pGame           = nullptr;
+CRanking         *CManager::m_pRanking        = nullptr;
+CResult          *CManager::m_pResult         = nullptr;
 bool              CManager::bIsClearedGame;                 // ゲームクリアしたかどうか
 
 //=============================================================================
@@ -49,27 +50,41 @@ CManager::~CManager()
 }
 
 //=============================================================================
+// [Create] インスタンス生成
+//=============================================================================
+CManager *CManager::Create(HINSTANCE hInstance, HWND hWnd, bool bWindow)
+{
+    //インスタンスが生成されていない時
+        if (!m_pInstance)
+        {
+            m_pInstance = new CManager;
+            m_pInstance->Init(hInstance, hWnd, bWindow);
+        }
+    return m_pInstance;
+}
+
+//=============================================================================
 // [Init] 初期化処理
 // hInstance : キーボードの入力に必用
 //=============================================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
 {
-    if (m_pInputKeyboard == NULL)
+    if (!m_pInputKeyboard)
     {
         // メモリの確保
         m_pInputKeyboard = new CInputKeyboard;
 
-        if (m_pInputKeyboard != NULL)
+        if (m_pInputKeyboard)
         {
             m_pInputKeyboard->Init(hInstance, hWnd);
         }
     }
-    if (m_InputController == NULL)
+    if (!m_InputController)
     {
         // メモリの確保
         m_InputController = new CInputController;
 
-        if (m_InputController != NULL)
+        if (m_InputController)
         {
             m_InputController->Init(hInstance, hWnd);
         }
@@ -80,7 +95,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, bool bWindow)
     // 初期化処理
     m_pRenderer->Init(hWnd, bWindow);
 
-    if (m_pSound == NULL)
+    if (!m_pSound)
     {
         m_pSound = new CSound;
     // サウンドの初期化
@@ -100,7 +115,7 @@ void CManager::Uninit(void)
     {
         m_InputController->Uninit();
         delete m_InputController;
-        m_InputController = NULL;
+        m_InputController = nullptr;
     }
 
     // キーボードの終了処理
@@ -108,7 +123,7 @@ void CManager::Uninit(void)
     {
         m_pInputKeyboard->Uninit();
         delete m_pInputKeyboard;
-        m_pInputKeyboard = NULL;
+        m_pInputKeyboard = nullptr;
     }
 
     // 各モードの終了処理
@@ -120,14 +135,14 @@ void CManager::Uninit(void)
         {
             m_pTitle->Uninit();
             delete m_pTitle;
-            m_pTitle = NULL;
+            m_pTitle = nullptr;
         }
         break;
 
     case MODE_TUTORIAL: // チュートリアル
         m_pTutorial->Uninit();
         delete m_pTutorial;
-        m_pTutorial = NULL;
+        m_pTutorial = nullptr;
         break;
 
     case MODE_GAME:
@@ -135,7 +150,7 @@ void CManager::Uninit(void)
         {
             m_pGame->Uninit();
             delete m_pGame;
-            m_pGame = NULL;
+            m_pGame = nullptr;
         }
         break;
 
@@ -144,7 +159,7 @@ void CManager::Uninit(void)
         {
             m_pResult->Uninit();
             delete m_pResult;
-            m_pResult = NULL;
+            m_pResult = nullptr;
         }
         break;
 
@@ -153,7 +168,7 @@ void CManager::Uninit(void)
         {
         m_pRanking->Uninit();
         delete m_pRanking;
-            m_pRanking = NULL;
+            m_pRanking = nullptr;
         }
         break;
     }
@@ -165,7 +180,7 @@ void CManager::Uninit(void)
 
         // メモりを開放してポインタの中身をNULLにする
         delete m_pRenderer;
-        m_pRenderer = NULL;
+        m_pRenderer = nullptr;
     }
 
     //サウンドの終了処理
@@ -174,7 +189,7 @@ void CManager::Uninit(void)
         m_pSound->Uninit();
         // メモりを開放してポインタの中身をNULLにする
         delete m_pSound;
-        m_pSound = NULL;
+        m_pSound = nullptr;
     }
 }
 
@@ -185,7 +200,7 @@ void CManager::Update(void)
 {
     if (CGame::GetPause() == false)
     {
-        if (m_pRenderer != NULL)
+        if (m_pRenderer)
         {
             // 更新処理
             m_pRenderer->Update();
@@ -226,14 +241,11 @@ void CManager::Update(void)
 //=============================================================================
 void CManager::Draw(void)
 {
-
-    if (m_pRenderer != NULL)
+    if (m_pRenderer)
     {
         // オブジェクトの描画処理
         m_pRenderer->Draw();
     }
-
-
 }
 
 //=============================================================================
@@ -249,22 +261,22 @@ void CManager::SetMode(MODE mode)
         {
             m_pTitle->Uninit();
             delete m_pTitle;
-            m_pTitle = NULL;
+            m_pTitle = nullptr;
         }
         break;
 
     case MODE_TUTORIAL: // チュートリアル
         m_pTutorial->Uninit();
         delete m_pTutorial;
-        m_pTutorial = NULL;
+        m_pTutorial = nullptr;
         break;
 
     case MODE_GAME:     // ゲーム
-        if (m_pGame != NULL)
+        if (m_pGame)
         {
             m_pGame->Uninit();
             delete m_pGame;
-            m_pGame = NULL;
+            m_pGame = nullptr;
         }
         break;
 
@@ -273,16 +285,16 @@ void CManager::SetMode(MODE mode)
         {
             m_pResult->Uninit();
             delete m_pResult;
-            m_pResult = NULL;
+            m_pResult = nullptr;
         }
         break;
 
     case MODE_RANKING:  // ランキング
-        if (m_pRanking != NULL)
+        if (m_pRanking)
         {
             m_pRanking->Uninit();
             delete m_pRanking;
-            m_pRanking = NULL;
+            m_pRanking = nullptr;
         }
         break;
     }

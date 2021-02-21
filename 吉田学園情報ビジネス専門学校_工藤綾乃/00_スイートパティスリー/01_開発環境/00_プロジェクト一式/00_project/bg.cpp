@@ -118,7 +118,7 @@ void CBg::Uninit(void)
             m_apScene2D[nCount] = NULL;
         }
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================

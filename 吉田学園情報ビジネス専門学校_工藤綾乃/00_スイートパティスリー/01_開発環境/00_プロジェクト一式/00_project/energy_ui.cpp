@@ -114,7 +114,7 @@ void CEnergy_UI::Uninit(void)
             delete m_pPolygon;
             m_pPolygon= NULL;
         }
-    Release();
+        SetDeathFlag();
 }
 
 //=============================================================================

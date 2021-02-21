@@ -13,8 +13,8 @@
 //=============================================================================
  CScene2D::CScene2D()
  {
-     m_pTexture = NULL;
-     m_pVtxBuff = NULL;
+     m_pTexture = nullptr;
+     m_pVtxBuff = nullptr;
      m_size = D3DXVECTOR3(50.0f, 50.0f, 0.0f);
  };
 
@@ -23,8 +23,8 @@
 //=============================================================================
 CScene2D::CScene2D(D3DXVECTOR3 pos , D3DXVECTOR3 size)
 {
-    m_pTexture = NULL;
-    m_pVtxBuff = NULL;
+    m_pTexture = nullptr;
+    m_pVtxBuff = nullptr;
     m_pos = pos;
     m_size = size;
 }
@@ -66,11 +66,11 @@ HRESULT CScene2D::Init(void)
 
     // 頂点バッファの生成
     pDevice->CreateVertexBuffer(
-        sizeof(VERTEX_2D) * NUM_VERTEX,//バッファサイズ
-        D3DUSAGE_WRITEONLY,//(固定）
-        FVF_VERTEX_2D,//頂点フォーマット
-        D3DPOOL_MANAGED,//（固定）
-        &m_pVtxBuff,//変数名が変わると変更が必要
+        sizeof(VERTEX_2D) * NUM_VERTEX, //バッファサイズ
+        D3DUSAGE_WRITEONLY,             //(固定）
+        FVF_VERTEX_2D,                  //頂点フォーマット
+        D3DPOOL_MANAGED,                //（固定）
+        &m_pVtxBuff,                    //変数名が変わると変更が必要
         NULL);
 
     //頂点データの範囲をロックし、頂点バッファへのポインタを取得
@@ -117,9 +117,9 @@ void CScene2D::Uninit(void)
     if (m_pVtxBuff)
     {
         m_pVtxBuff->Release();
-        m_pVtxBuff = NULL;
+        m_pVtxBuff = nullptr;
     }
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================
@@ -127,8 +127,8 @@ void CScene2D::Uninit(void)
 //=============================================================================
 void CScene2D::Update(void)
 {
-    VERTEX_2D *pVtx;//頂点情報のポインタ
-                    //頂点データの範囲をロックし、頂点バッファへのポインタを取得
+    VERTEX_2D *pVtx;        //頂点情報のポインタ
+                            //頂点データの範囲をロックし、頂点バッファへのポインタを取得
     m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
     pVtx[0].pos = D3DXVECTOR3(m_pos.x - (m_size.x / 2.0f), m_pos.y - (m_size.y / 2.0f), 0.0f);
@@ -233,27 +233,27 @@ void CScene2D::SetColor(D3DXCOLOR coror)
 }
 
 //=============================================================================
-// [JudgeFittingRectangle] 矩形の当たり判定
+// [CheckRectangleCollision] 矩形の当たり判定
 // 返り値 : 当たっているオブジェクトのポインタ
 //=============================================================================
-CScene* CScene2D::JudgeFittingRectangle(CScene::OBJTYPE type)
+CScene* CScene2D::CheckRectangleCollision(CScene::OBJTYPE type)
 {
     // 変数宣言
-    CScene *pScene = NULL;
+    CScene *pScene = nullptr;
 
-    // オブジェクトの数分ループ
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
-    {
-        pScene = GetSceneObject(nCount);
-        if (pScene != NULL)
+    // 先頭のアドレスを取得
+    pScene = CScene::GetTop(PRIORITY_MIDDLE_VIEW);
+        while (pScene)
         {
+        // 次のアドレスを保存
+        CScene *pNext = pScene->GetNext();
             if (pScene->GetObjectType() == type)
             {
                 D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
                 D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
 
                 // 当たっていたら
-                if (m_pos.x - m_size.x / 2 <= objPos.x + objSize.x / 2 &&
+                if (m_pos.x - m_size.x / 2 <=  objPos.x + objSize.x / 2 &&
                     m_pos.x + m_size.x / 2 >= objPos.x - objSize.x / 2 &&
                     m_pos.y - m_size.y / 2 <= objPos.y + objSize.y / 2 &&
                     m_pos.y + m_size.y / 2 >= objPos.y - objSize.y / 2)
@@ -261,40 +261,41 @@ CScene* CScene2D::JudgeFittingRectangle(CScene::OBJTYPE type)
                     return pScene;  // 当たっていたらオブジェクトのアドレスを返す
                 }
             }
+            // 次のアドレスを取得
+            pScene = pNext;
         }
-    }
-    return pScene;// 当たっていないとNULLを返す
+    return nullptr;// 当たっていないとNULLを返す
 }
 
 //=============================================================================
-// [JudgeFittingRectangle] 円の当たり判定
+// [CheckCircleCollision] 円の当たり判定
 // 返り値 : 当たっているオブジェクトのポインタ
 //=============================================================================
 CScene * CScene2D::CheckCircleCollision(CScene::OBJTYPE type)
 {
-    return nullptr;
     // 変数宣言
     CScene *pScene = NULL;
 
-    // オブジェクトの数分ループ
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+    // 先頭のアドレスを取得
+    pScene = CScene::GetTop(type);
+    if (pScene != NULL)
     {
-        pScene = GetSceneObject(nCount);
+        // 次のアドレスを保存
+        CScene *pNext = pScene->GetNext();
         if (pScene != NULL)
         {
-            if (pScene->GetObjectType() == type)
-            {
-                D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
-                D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
+            D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
+            D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
 
-                // 当たっていたら
-                float distance = powf(m_pos.x - objPos.x, 2.0f) + powf(m_pos.y - objPos.y, 2.0f) + 0.0f;      //位置
-                float radius = powf(m_size.x + objSize.x, 2.0f); //半径
-                if (distance <= radius)//当たっているかどうか
-                {
-                    return pScene;  // 当たっていたらオブジェクトのアドレスを返す
-                }
+            // 当たっていたら
+            float distance = powf(m_pos.x - objPos.x, 2.0f) + powf(m_pos.y - objPos.y, 2.0f) + 0.0f;      //位置
+            float radius = powf(m_size.x + objSize.x, 2.0f); //半径
+            if (distance <= radius)//当たっているかどうか
+            {
+                return pScene;  // 当たっていたらオブジェクトのアドレスを返す
             }
+            // 次のアドレスを取得
+            pScene = pNext;
         }
     }
     return pScene;// 当たっていないとNULLを返す

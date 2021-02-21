@@ -33,19 +33,19 @@ public:
     void Update(void);
     void Draw(void);
 
-    // 位置のセッター/ゲッター
+    // 位置のセッタ/ゲッタ
     void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
     D3DXVECTOR3 GetPosition(void) { return m_pos; }
 
-    // 移動量のセッター/ ゲッター
+    // 移動量のセッタ/ ゲッタ
     void SetMove(D3DXVECTOR3 move) { m_move = move; }
     D3DXVECTOR3 GetMove(void) { return m_move; }
 
-    // サイズのセッター/ゲッター
+    // サイズのセッタ/ゲッタ
     void SetSize(const float x, const float y) { m_size = D3DXVECTOR3(x, y, 0.0f); }
     D3DXVECTOR3 GetSize(void) { return m_size; }
 
-    // 消えるまでの時間セッター/ゲッター
+    // 消えるまでの時間セッタ/ゲッタ
     void SetLife(int nDamage) { m_nLife = nDamage; }
     int GetLife(void) { return m_nLife; }
 

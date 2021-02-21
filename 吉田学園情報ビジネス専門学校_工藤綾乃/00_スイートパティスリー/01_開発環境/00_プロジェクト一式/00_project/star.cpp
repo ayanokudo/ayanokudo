@@ -8,6 +8,14 @@
 #include "scene2d.h"
 #include "item.h"
 
+//*****************************************************************************
+// マクロ定義
+//*****************************************************************************
+#define MIN_STAR_POS_Y (0.0f - m_size.y)                // 上方向への限界値
+#define MAX_STAR_POS_Y (SCREEN_HEIGHT + m_size.y)       // 下方向への限界値
+#define MIN_STAR_POS_X (0.0f - m_size.x)                // 左方向への限界値
+#define MAX_STAR_POS_X (1280 + m_size.x)                // 右方向への限界値
+
 //=============================================================================
 // [CStar] デフォルトコンストラクタ
 //=============================================================================
@@ -49,9 +57,8 @@ CStar::~CStar()
 //=============================================================================
 CStar * CStar::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move)
 {
-    CStar *pStar = NULL;
-
-    if (pStar == NULL)
+    CStar *pStar = nullptr;
+    if (!pStar)
     {
         pStar = new CStar(pos, move);
         pStar->Init();
@@ -85,11 +92,10 @@ void CStar::Uninit(void)
         if (m_pTriangle[nCount])
         {
             m_pTriangle[nCount]->Uninit();
-            m_pTriangle[nCount] = NULL;
+            m_pTriangle[nCount] = nullptr;
         }
     }
-
-    Release();
+    SetDeathFlag();
 }
 
 //=============================================================================
@@ -105,8 +111,8 @@ void CStar::Update(void)
     }
 
     // ショットとの当たり判定
-    CScene* pScene = JudgeFittingRectangle(CScene::OBJTYPE_BULLET);
-    if (pScene != NULL)
+    CScene* pScene = CheckRectangleCollision(CScene::OBJTYPE_BULLET);
+    if (pScene)
     {
         if (IsItemAppeared == false)
         {
@@ -114,7 +120,7 @@ void CStar::Update(void)
             {
                 m_pTriangle[nCount]->SetColor(D3DXCOLOR(1.0f,0.5f,0.5f,0.5f));
             }
-            
+
             // エネルギー回復アイテム生成
             CItem::Create(m_pos, D3DXVECTOR3(-2.0f, 0.0f, 0.0f),CItem::TYPE_001,false);
             IsItemAppeared = true;
@@ -122,11 +128,10 @@ void CStar::Update(void)
     }
 
     // 画面外に出たら削除
-    if (m_pos.x <= 0.0f - m_size.x ||
-        m_pos.x >= 3000 ||
-        m_pos.y <= 0.0f - m_size.y ||
-        m_pos.y >= SCREEN_HEIGHT + m_size.y
-        )
+    if (m_pos.x <= MIN_STAR_POS_X ||
+        m_pos.x >= MAX_STAR_POS_X ||
+        m_pos.y <= MIN_STAR_POS_Y ||
+        m_pos.y >= MAX_STAR_POS_Y)
     {
         Uninit();
     }
@@ -144,56 +149,58 @@ void CStar::Draw(void)
 }
 
 //=============================================================================
-// [JudgeFittingRectangle] 矩形の当たり判定
+// [CheckRectangleCollision] 矩形の当たり判定
 // 返り値 : 当たっているオブジェクトのポインタ
 //=============================================================================
-CScene * CStar::JudgeFittingRectangle(CScene::OBJTYPE type)
+CScene * CStar::CheckRectangleCollision(CScene::OBJTYPE type)
 {
     // 変数宣言
-    CScene *pScene = NULL;
+    CScene *pScene = nullptr;
 
-    // オブジェクトの数分ループ
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+    // 先頭のアドレスを取得
+    pScene = CScene::GetTop(PRIORITY_MIDDLE_VIEW);
+    while (pScene)
     {
-        pScene = GetSceneObject(nCount);
-        if (pScene != NULL)
+        // 次のアドレスを保存
+        CScene *pNext = pScene->GetNext();
+        if (pScene->GetObjectType() == type)
         {
-            if (pScene->GetObjectType() == type)
-            {
-                D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
-                D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
+            D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
+            D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
 
-                // 当たっていたら
-                if (m_pos.x - m_size.x / 2 <= objPos.x + objSize.x / 2 &&
-                    m_pos.x + m_size.x / 2 >= objPos.x - objSize.x / 2 &&
-                    m_pos.y - m_size.y / 2 <= objPos.y + objSize.y / 2 &&
-                    m_pos.y + m_size.y / 2 >= objPos.y - objSize.y / 2)
-                {
-                    return pScene;  // 当たっていたらオブジェクトのアドレスを返す
-                }
+            // 当たっていたら
+            if (m_pos.x - m_size.x / 2 <= objPos.x + objSize.x / 2 &&
+                m_pos.x + m_size.x / 2 >= objPos.x - objSize.x / 2 &&
+                m_pos.y - m_size.y / 2 <= objPos.y + objSize.y / 2 &&
+                m_pos.y + m_size.y / 2 >= objPos.y - objSize.y / 2)
+            {
+                return pScene;  // 当たっていたらオブジェクトのアドレスを返す
             }
         }
+        // 次のアドレスを取得
+        pScene = pNext;
     }
-    return pScene;// 当たっていないとNULLを返す
+    return nullptr;// 当たっていないとNULLを返す
 }
 
 //=============================================================================
-// [JudgeFittingRectangle] 円の当たり判定
+// [CheckCircleCollision] 円の当たり判定
 // 返り値 : 当たっているオブジェクトのポインタ
 //=============================================================================
 CScene * CStar::CheckCircleCollision(CScene::OBJTYPE type)
 {
-    return nullptr;
     // 変数宣言
-    CScene *pScene = NULL;
-
-    // オブジェクトの数分ループ
-    for (int nCount = 0; nCount < MAX_POLYGON; nCount++)
+    CScene *pScene = nullptr;
+    // 先頭のアドレスを取得
+    for (int nPliority = 0; nPliority < PRIORITY_MAX; nPliority++)
     {
-        pScene = GetSceneObject(nCount);
-        if (pScene != NULL)
+        pScene = CScene::GetTop(nPliority);
+
+        while (pScene == NULL)
         {
-            if (pScene->GetObjectType() == type)
+            // 次のアドレスを保存
+            CScene *pNext = pScene->GetNext();
+            if (pScene != NULL)
             {
                 D3DXVECTOR3 objPos = ((CScene2D*)pScene)->GetPosition();
                 D3DXVECTOR3 objSize = ((CScene2D*)pScene)->GetSize();
@@ -205,8 +212,10 @@ CScene * CStar::CheckCircleCollision(CScene::OBJTYPE type)
                 {
                     return pScene;  // 当たっていたらオブジェクトのアドレスを返す
                 }
+                // 次のアドレスを取得
+                pScene = pNext;
             }
         }
     }
-    return pScene;// 当たっていないとNULLを返す
+    return nullptr;// 当たっていないとNULLを返す
 }
