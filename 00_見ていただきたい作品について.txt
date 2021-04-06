@@ -9,5 +9,6 @@
 今回見ていただきたい作品は
 
 "yoshida_g_kudo/00_スイートパティスリー"内に入っております。
+お時間がありましたらほかの作品も見ていただけると幸いです。
 
 作品を起動するにはMicrosoft Visual C++ 2015 再頒布可能パッケージが必要です。(https://www.microsoft.com/ja-jp/download/details.aspx?id=53587)
