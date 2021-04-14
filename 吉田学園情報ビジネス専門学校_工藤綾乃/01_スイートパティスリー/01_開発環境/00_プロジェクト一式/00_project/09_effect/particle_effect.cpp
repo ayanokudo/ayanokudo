@@ -162,13 +162,13 @@ void CParticle_Effect::Draw(void)
     LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
     // レンダリングステートの変更
-    pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+    pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);// 加算合成オン
 
     // ポリゴンの描画
     CScene2D::Draw();
 
     // レンダリングステートを戻す
-    pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+    pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); // 加算合成オフ
 }
 
 //=============================================================================
@@ -205,7 +205,7 @@ void CParticle_Effect::SetBom(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 Red
     {
         // エフェクトの設定
         float fAngle = (rand() % 314 / 100.0f)*(rand() % 20) * -1;          // 角度を計算する
-        D3DXVECTOR3 actualMove = D3DXVECTOR3((float)sin(fAngle) * move.x, (float)cos(fAngle) * move.y, 0.0f);
-        Create(pos, actualMove, ReductionMove, Collor, fSize, fReductionSize, fReductionAlpha, type);
+        D3DXVECTOR3 actualMove = D3DXVECTOR3((float)sin(fAngle) * move.x, (float)cos(fAngle) * move.y, 0.0f);// 移動方向をセット
+        Create(pos, actualMove, ReductionMove, Collor, fSize, fReductionSize, fReductionAlpha, type);// エフェクトを生成
     }
 }

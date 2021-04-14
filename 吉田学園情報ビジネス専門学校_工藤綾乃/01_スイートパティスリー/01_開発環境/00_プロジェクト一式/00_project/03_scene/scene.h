@@ -14,32 +14,33 @@
 // オブジェクトクラス
 class  CScene
 {
+    // オブジェクトのタイプ
 public:
     typedef enum
     {
-        OBJTYPE_NONE = 0,
-        OBJTYPE_BG,
-        OBJTYPE_TERRAIN,
-        OBJTYPE_EFFECT,
-        OBJTYPE_UI,
-        OBJTYPE_ITEM,
-        OBJTYPE_STAR,
-        OBJTYPE_BULLET,
-        OBJTYPE_BOSS,
-        OBJTYPE_ENEMY,
-        OBJTYPE_OPTION,
-        OBJTYPE_SHIELD,
-        OBJTYPE_PLAYER,
-        OBJTYPE_EXPLOSION,
-        OBJTYPW_PAUSE,
-        OBJTYPE_FADE,
-        OBJTYPE_MAX
+        OBJTYPE_NONE = 0,   // 無し
+        OBJTYPE_BG,         // 背景
+        OBJTYPE_TERRAIN,    // 地形
+        OBJTYPE_EFFECT,     // エフェクト
+        OBJTYPE_UI,         // UI
+        OBJTYPE_ITEM,       // アイテム
+        OBJTYPE_STAR,       // 星
+        OBJTYPE_BULLET,     // 弾
+        OBJTYPE_BOSS,       // ボス
+        OBJTYPE_ENEMY,      // 敵
+        OBJTYPE_OPTION,     // オプション
+        OBJTYPE_SHIELD,     // シールド
+        OBJTYPE_PLAYER,     // プレイヤー
+        OBJTYPE_EXPLOSION,  // 爆発
+        OBJTYPW_PAUSE,      // ポーズ
+        OBJTYPE_FADE,       // フェード
+        OBJTYPE_MAX         // 種類の数
     } OBJTYPE;
 
     // 描画順
     typedef enum
     {
-        PRIORITY_BACKGROUND = 0,       // 後景
+        PRIORITY_BACKGROUND = 0,    // 後景
         PRIORITY_MIDDLE_VIEW,       // 中景
         PRIORITY_FOREGROUND,        // 前景
         PRIORITY_MAX
@@ -68,8 +69,8 @@ public:
     void SetPriority(PRIORITY priority) { m_Priority = priority; }
     PRIORITY GetPriority(void) { return m_Priority; }
 
-    static CScene*GetTop(int nIndex) { return m_pTop[nIndex]; }// 先頭アドレスのゲッタ
-    static CScene*GetCur(int nIndex) { return m_pCur[nIndex]; }// 現在のアドレスのゲッタ
+    static CScene*GetTop(int nIndex) { return m_pTop[nIndex]; } // 先頭アドレスのゲッタ
+    static CScene*GetCur(int nIndex) { return m_pCur[nIndex]; } // 現在のアドレスのゲッタ
     CScene*GetNext(void) { return m_pNext; }                    // 次のアドレスのゲッタ
     CScene*GetPrev(void) { return m_pPrev; }                    // 前のアドレスのゲッタ
 

@@ -17,10 +17,10 @@ public :
     // エフェクトの種類
     typedef enum
     {
-        PARTICLE_TYPE_CIRCLE=0,
-        PARTICLE_TYPE_STAR,
-        PARTICLE_TYPE_COOKIE,
-        PARTICLE_TYPE_MAX
+        PARTICLE_TYPE_CIRCLE=0, // 丸の画像
+        PARTICLE_TYPE_STAR,     // 星の画像
+        PARTICLE_TYPE_COOKIE,   // クッキーの画像
+        PARTICLE_TYPE_MAX       // 画像の最大数
     }PARTICLE_TYPE;
 
     CParticle_Effect();
