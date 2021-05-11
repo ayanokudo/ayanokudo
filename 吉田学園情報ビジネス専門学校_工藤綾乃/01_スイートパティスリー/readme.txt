@@ -50,6 +50,7 @@ exeファイルと起動に必要なリソースファイルが入っていま�
 ◆動作確認済み環境◆
 Windows10
 DirectxInput対応のゲームパッド(ジョイスティック)に対応しています。
+作品を起動するにはMicrosoft Visual C++ 2015 再頒布可能パッケージが必要です。(https://www.microsoft.com/ja-jp/download/details.aspx?id=53587)
 
 ◆操作方法◆
 

@@ -56,6 +56,9 @@
 #define PLAYER_EFFECT_FREDUCTION_ALPHA (0.1f)                                                    // 軌跡エフェクトのアルファ値減少量の設定
 #define PLAYER_EFFECT_TYPE             CParticle_Effect::PARTICLE_TYPE_CIRCLE                    // 軌跡エフェクトのタイプ
 
+#define TERRAIN_DAMAGE (50)     // 地形に触れて受けるダメージ
+#define BULLET_DAMAGE (100)      // 弾のダメージ
+
 //*****************************************************************************
 // 静的メンバ変数初期化
 //*****************************************************************************
@@ -70,6 +73,7 @@ CPlayer::CPlayer()
     SetObjtype(CScene::OBJTYPE_PLAYER);
     SetPosition(D3DXVECTOR3(200.0f, 360.0f, 0.0f));
     SetSize(D3DXVECTOR3(PLAYER_SIZE_X, PLAYER_SIZE_Y,0.0f));
+
     m_pLife = NULL;
     m_powerUp = POWERUP_NONE;
     m_bIsDisplayed = true;
@@ -261,7 +265,7 @@ void CPlayer::Update(void)
             CScene *pScene = CheckRectangleCollision(CScene::OBJTYPE_TERRAIN);
             if (pScene)
             {
-                Damage();
+                Damage(TERRAIN_DAMAGE);
                 pScene = NULL;
                 return;
             }
@@ -272,7 +276,7 @@ void CPlayer::Update(void)
             {   //敵の弾だった時
                 if (((CBullet*)pScene)->GetType() == CBullet::TYPE_ENEMY)
                 {
-                    Damage();
+                    Damage(BULLET_DAMAGE);
                     pScene->Uninit();
                     pScene = NULL;
                     return;
@@ -507,46 +511,65 @@ void CPlayer::ShootMissile(void)
 void CPlayer::EnergyDown(void)
 {
     m_nEnergy--;
+
+    // エネルギーが0以下のときはミス
     if (m_nEnergy <= 0)
-    {
-        Damage();
-    }
+        Miss();
 }
 
 //=============================================================================
 // [Damage] ダメージを受けた時の処理
 //=============================================================================
-void CPlayer::Damage(void)
+void CPlayer::Damage(int nEnergy)
+{
+    // 無敵状態のときは処理を行わない
+    if (m_State == PLAYER_STATE_INVINCIBLE)
+        return;
+
+    // シールドがある時は処理を行わない
+    if (m_bUsingShield)
+        return;
+
+    // サウンドの取得
+    CSound *pSound = CManager::GetSound();
+
+    // ダメージ音
+    pSound->Play(CSound::SOUND_LABEL_SE_005);
+
+    // エネルギーを減らす
+    m_nEnergy -= nEnergy;
+
+    // 無敵時間の設定
+    m_State = PLAYER_STATE_INVINCIBLE;
+    m_nInvincibleCount = INVINCIBLE_INTERVAL;
+
+    // エネルギーが0以下のときはミス
+    if (m_nEnergy <= 0)
+        Miss();
+
+}
+
+//=============================================================================
+// [Miss] ミス時の処理
+//=============================================================================
+void CPlayer::Miss(void)
 {
     // 変数宣言
     D3DXVECTOR3 pos = GetPosition();
     CSound *pSound = CManager::GetSound();
 
-    // シールドがある場合スキップ
-    if (m_bUsingShield)
-    {
-        return;
-    }
-
-    // 残機の設定
-    m_nLife--;
-    m_pLife->SetLife(m_nLife);
-
     // プレイヤーを一旦非表示にする
     SetPosition(D3DXVECTOR3(-100.0f, -100.0f, 0.0f));
     pSound->Play(CSound::SOUND_LABEL_SE_005);
     m_bIsDisplayed = false;
-    CTriangle_Effect::Create(pos, 300);// エフェクトの生成
 
-    // エネルギーのリセット
-    m_nEnergy = MAX_ENERGY;
 
     // パワーアップ内容のリセット
-    m_nInterval = BULLET_INTERVAL;
-    m_shotType = SHOTTYPE_BULLET;
-    m_nSppedLv = 0;
-    m_bHasMissile = false;
-    m_nOptionLv = 0;
+    m_nInterval = BULLET_INTERVAL;  // 弾の発射間隔
+    m_shotType = SHOTTYPE_BULLET;   // 弾のタイプ
+    m_nSppedLv = 0;                 // スピードのレベル
+    m_bHasMissile = false;          // ミサイルの所持
+    m_nOptionLv = 0;                // オプションの数
 
     for (int nCount = 0; nCount < LIMIT_OPTION; nCount++)
     {// オプションのオブジェクトを破棄
@@ -556,23 +579,37 @@ void CPlayer::Damage(void)
             m_pOption[nCount] = NULL;
         }
     }
+    // シールドの破棄
     m_bUsingShield = false;
     if (m_pShield != NULL)
     {
         m_pShield->Uninit();
         m_pShield = NULL;
     }
+
+    // エフェクトの生成
+    CTriangle_Effect::Create(pos, 300);
+
+    // エネルギーのリセット
+    m_nEnergy = MAX_ENERGY;
+
     // パワーアップゲージ点灯中はスピードアップにする
     if (m_powerUp != POWERUP_NONE)
     {
         m_powerUp = POWERUP_SPPED;
     }
+
+    // 残機の設定
+    m_nLife--;
+    m_pLife->SetLife(m_nLife);
+
     // 残機がなくなったら
     if (m_nLife <= 0)
     {
         Uninit();
         CGame::SetState(CGame::STATE_END);// ゲーム終了
     }
+
 }
 
 //=============================================================================
@@ -597,6 +634,10 @@ void CPlayer::SetEnergy(int nEnergy)
 void CPlayer::SetPowerUp(POWERUP powerUp)
 { 
     m_powerUp = powerUp;
+
+    // パワーアップゲージが1週したら1番目に戻す
+    if (m_powerUp== POWERUP_MAX)
+        m_powerUp = POWERUP_SPPED;
 }
 
 //=============================================================================
@@ -774,6 +815,12 @@ void CPlayer::DebugCommand(void)
             m_bUsingShield = true;
             m_pShield = CShield::Create(GetPosition(),this);
         }
+    }
+
+    // 0キー入力 : 残機を減らす
+    if (pInputKeyboard->GetKeyTrigger(DIK_0))
+    {
+        Miss();
     }
 
 }

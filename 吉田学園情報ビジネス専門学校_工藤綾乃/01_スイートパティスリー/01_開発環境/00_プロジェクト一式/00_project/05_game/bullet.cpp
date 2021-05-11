@@ -36,7 +36,7 @@
 //*****************************************************************************
 LPDIRECT3DTEXTURE9 CBullet::m_apTexture[TYPE_MAX] = {};
 char *CBullet::m_apTextureName[TYPE_MAX] = {
-    "data/TEXTURE/bullet001.png",
+    "data/TEXTURE/bullet.png",
     "data/TEXTURE/enemy000.png"
 };
 //=============================================================================

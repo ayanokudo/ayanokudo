@@ -34,6 +34,8 @@
 #define ENEMY_EFFECT_FREDUCTION_ALPHA    (0.0f)                                                      // 軌跡エフェクトのアルファ値減少量の設定
 #define ENEMY_EFFECT_TYPE                CParticle_Effect::PARTICLE_TYPE_COOKIE                      // 軌跡エフェクトのタイプ
 
+#define DAMAGE_PLAYER (100)                 // プレイヤーに与えるダメージの数
+
 //*****************************************************************************
 // 静的メンバ変数初期化
 //*****************************************************************************
@@ -146,7 +148,7 @@ void CEnemy::Update(void)
     if (pScene)
     {
         // プレイヤーにダメージを与える
-        ((CPlayer*)pScene)->Damage();
+        ((CPlayer*)pScene)->Damage(DAMAGE_PLAYER);
         pScene = nullptr;
     }
     if (m_State == STATE_NORMAL)

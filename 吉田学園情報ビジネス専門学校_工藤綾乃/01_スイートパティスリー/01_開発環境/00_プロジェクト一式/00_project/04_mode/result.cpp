@@ -169,7 +169,7 @@ void CResult::Update(void)
 
     // ƒ^ƒCƒgƒ‹‘JˆÚ
     if (IsStartKey)
-        CFade::SetFade(CManager::MODE_TITLE);
+        CFade::SetFade(CManager::MODE_RANKING);
 
 }
 

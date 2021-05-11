@@ -19,6 +19,8 @@
 #define MISSILE_INTERVAL    (60)            // ミサイルの発射間隔
 #define LASER_INTERVAL      (60)            // レーザーの発射間隔
 
+#define INVINCIBLE_INTERVAL (60)            // 無敵時間の設定
+
 //*****************************************************************************
 // 前方宣言
 //*****************************************************************************
@@ -91,7 +93,8 @@ public:
     void ShootMissile(void);
 
     void EnergyDown(void);
-    void Damage(void);
+    void Damage(int nEnergy);
+    void Miss(void);
     void PowerUp(void);
     void CheckState(void);
 
@@ -159,7 +162,7 @@ private:
     int                       m_nLife;                  // 残機
     CLife                    *m_pLife;                  // 残機UIの情報
 
-    STATE                     m_State;            // プレイヤー状態
+    STATE                     m_State;                  // プレイヤー状態
     int                       m_nEnergy;                // エネルギーのカウント
     CEnergy_UI               *m_pEnergyUI;
     int                       m_nInvincibleCount;       // 無敵状態のカウント

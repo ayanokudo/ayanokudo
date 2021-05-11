@@ -1,9 +1,10 @@
 //=================================================================
 //
-// タッチナンバー処理　サーバー
+//　メインクラス[main.cpp]
 // Author : AYANO KUDO
 //
 //=================================================================
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <WinSock2.h>
 #include <thread>       // マルチスレッド対応
@@ -14,7 +15,7 @@
 //*****************************************************************
 // マクロ定義
 //*****************************************************************
-#define FILE_NAME "data/test.txt"        // 読み込むファイル名
+#define FILE_NAME "data/ranking.txt"        // 読み込むファイル名
 #define SERVER_PORT_NUM (12345)             // ポート番号
 
 //*****************************************************************
@@ -93,7 +94,6 @@ void ReadFile(void)
         for (int nCount = 0; nCount < MAX_RANKING; nCount++)
         {
             fscanf(pFile, "%d", &g_aRankinData[nCount].nClearTime);
-            //fscanf(pFile, "%s", &g_aRankinData[nCount].aName);
 
         }
         fclose(pFile);
@@ -113,7 +113,6 @@ void WriteFile(void)
         for (int nCount = 0; nCount < MAX_RANKING; nCount++)
         {
             fprintf(pFile, "%d\n", g_aRankinData[nCount].nClearTime);
-            //fprintf(pFile, "%s\n", g_aRankinData[nCount].aName);
         }
         fclose(pFile);
     }
@@ -127,7 +126,6 @@ void WorkerThread(CTcpClient *pTcpClient)
     // 変数宣言
     char aRecvBuf[256];
     char aSendBuf[256];
-    int nTime;//今回のクリアタイム
     char aName[MAX_NAME];
 
     // 接続を待ち受ける
@@ -152,9 +150,7 @@ void WorkerThread(CTcpClient *pTcpClient)
             // タイムを保存
             int nData = htonl(g_aRankinData[nCntRank].nClearTime);
             memcpy(&aSendBuf[nCntRank * sizeof(int)], &nData, sizeof(int));
-            //// 名前を保存
-            //g_aRankinData[nCntRank].aName[MAX_NAME - 1] = '\0';// 名前の最後にNULL文字を入れる
-            //memcpy(&aSendBuf[nCntRank * sizeof(RankingData) + sizeof(int)], &g_aRankinData[nCntRank].aName, MAX_NAME);
+
         }
         pTcpClient->Send(aSendBuf,sizeof(aSendBuf));
 
@@ -164,11 +160,6 @@ void WorkerThread(CTcpClient *pTcpClient)
         // ランキングリクエスト
         //2～5バイト目がら受信したスコアを取得
         int nTime = (int)(*(int*)&aRecvBuf[1]);            //エンディアン変換
-        
-            //// 6～13バイト目から名前を取得
-            //char aName[MAX_NAME];
-            //memcpy(aName, &aRecvBuf[5], MAX_NAME);
-            //aName[MAX_NAME - 1] = '\0';         // 文字列の最後にNULL文字を入れる
 
         // ランキングを更新
         int nRank = SetRanking(nTime,aName);// 今回の順位を変数に保存
@@ -201,7 +192,7 @@ int SetRanking(int nTime, char *pName)
 
             }
             g_aRankinData[nCount].nClearTime = nTime;
-            //strcpy(g_aRankinData[nCount].aName, pName);
+
             break;
         }
     }

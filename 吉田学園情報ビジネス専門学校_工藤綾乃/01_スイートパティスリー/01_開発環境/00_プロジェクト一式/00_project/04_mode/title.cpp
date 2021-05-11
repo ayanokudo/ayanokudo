@@ -176,10 +176,17 @@ void CTitle::Update(void)
             // サウンド鳴らす
             CSound *pSound = CManager::GetSound();
             pSound->Play(CSound::SOUND_LABEL_SE_006);
-            // ゲーム画面へ遷移
+            // チュートリアルへ遷移
             CFade::SetFade(CManager::MODE_TUTORIAL);
         }
     }
+
+    if (pInputKeyboard->GetKeyTrigger(DIK_0))
+    {
+        // ランキング画面へ遷移
+        CFade::SetFade(CManager::MODE_RANKING);
+    }
+
 }
 
 //=============================================================================

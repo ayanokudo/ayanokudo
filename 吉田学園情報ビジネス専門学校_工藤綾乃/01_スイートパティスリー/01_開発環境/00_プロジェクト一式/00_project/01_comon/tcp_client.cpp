@@ -55,9 +55,9 @@ bool CTcpClient::Init(const char *pHostName, int nPortNum)
     addr.sin_port = htons(nPortNum);                       //どのポートに接続するか
     addr.sin_addr.S_un.S_addr = inet_addr(pHostName);      //サーバーのIPアドレス
 
-                                                           // サーバーに接続する
-                                                           // connect関数は失敗すると0以外を返す
-                                                           // サーバーに接続できなかった時、サーバーを起動していないとき、IPやポートが間違っている、ファイアーウォールではじかれたときにエラー
+    // サーバーに接続する
+    // connect関数は失敗すると0以外を返す
+    // サーバーに接続できなかった時、サーバーを起動していないとき、IPやポートが間違っている、ファイアーウォールではじかれたときにエラー
     if (connect(m_sock, (struct sockaddr*)&addr, sizeof(addr)) != 0)
     {
         printf("connect:%d\n", WSAGetLastError());

@@ -145,7 +145,7 @@ void CTriangle_Effect::Update(void)
                     ((CPlayer*)pScene)->SetPosition(D3DXVECTOR3(200.0f, 360.0f, 0.0f));
                     ((CPlayer*)pScene)->SetAlive(true);
                     ((CPlayer*)pScene)->SetPlayerState(CPlayer::PLAYER_STATE_INVINCIBLE);
-                    ((CPlayer*)pScene)->SetInvincibleCount(60);// 無敵時間の設定
+                    ((CPlayer*)pScene)->SetInvincibleCount(INVINCIBLE_INTERVAL);// 無敵時間の設定
                     // エフェクトの削除
                     Uninit();
                 }

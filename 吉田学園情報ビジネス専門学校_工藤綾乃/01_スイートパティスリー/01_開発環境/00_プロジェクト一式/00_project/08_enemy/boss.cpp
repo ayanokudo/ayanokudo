@@ -16,8 +16,8 @@
 // マクロ定義
 //*****************************************************************************
 #define BOSS_LIFE   (40)            // ボスの体力
-#define BOSS_SIZE_X (170)           // ボスの大きさ
-#define BOSS_SIZE_Y (250)           // ボスの大きさ
+#define BOSS_SIZE_X (256)           // ボスの大きさ
+#define BOSS_SIZE_Y (256)           // ボスの大きさ
 
 #define BOSS_ENEMY_LENGTH (150.0f)  // ボスの周りの敵の長さ
 #define BOSS_ENEMY_ROT    (0.05f)   // ボスの周りの敵の回転速度

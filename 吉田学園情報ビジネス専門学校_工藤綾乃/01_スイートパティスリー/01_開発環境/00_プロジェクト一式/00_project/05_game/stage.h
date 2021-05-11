@@ -32,18 +32,22 @@ class CStage
 public:
     CStage();
     ~CStage();
+
     // ステージファイルの読み込み
     void ReadFile(void);
     void Init(void);
     void Update(void);
 
+    void ReadFileName(void);
 private:
     static int m_nFreme;  // カウンタ
     int m_nIndex;         // 出現させるオブジェクトのインデックス
     static STAGEDATA m_pStageData[MAX_POLYGON];// ステージの情報
     int m_nNumber;        // 数
 
-    int m_nFormaition;    // 敵の隊列番号
+    int m_nFormaition;          // 敵の隊列番号
+    static int m_nStageNum;     // ステージ数
+    char m_pFileName[128];          // ファイル名
 };
 
 #endif // !_STAGE_H_

@@ -20,11 +20,13 @@
 //******************************************************************************
 int CStage::m_nFreme=0;
 STAGEDATA CStage::m_pStageData[MAX_POLYGON] = {};
+int CStage::m_nStageNum = 0;        // ステージの総数
 
 //******************************************************************************
 // マクロ定義
 //******************************************************************************
 #define FILE_NAME "data/TXT/stage001.txt"       // 読み込むステージファイル
+#define STAGE_DATA_FILE_NAME "data/TXT/stagedata.txt"
 
 //=============================================================================
 // [CStage] コンストラクタ
@@ -54,8 +56,9 @@ void CStage::ReadFile(void)
     char cDie[128];		// 不必要な文字を読み込む
     m_nNumber = 0;      // 登録オブジェクト数リセット
 
+
     //テキストファイル読み込み
-    pFile = fopen(FILE_NAME, "r");//ファイルオープン
+    pFile = fopen(m_pFileName, "r");//ファイルオープン
 
     if (pFile != NULL)//ファイルを開いている状態の時
     {
@@ -148,6 +151,7 @@ void CStage::Init(void)
     m_nIndex = 0;
     m_nFreme = 0;
     m_nFormaition = 1;
+    ReadFileName();
     ReadFile();
 }
 
@@ -212,3 +216,47 @@ void CStage::Update(void)
         m_nFreme = 0;//カウンタリセット
     }
 }
+
+//=============================================================================
+// [ReadFileName] ファイル
+//=============================================================================
+void CStage::ReadFileName(void)
+{
+    // ファイルオープン
+    FILE *pFile = nullptr;
+    pFile = fopen(STAGE_DATA_FILE_NAME, "r");
+
+    char cRead[128];	// 文字読み取り用
+    char cHead[128];	// 比較用
+    char cDie[128];		// 不必要な文字を読み込む
+    m_nNumber = 0;      // 登録オブジェクト数リセット
+
+    if (pFile)
+    {
+        while (strcmp(cHead, "SCRIPT"))// SCRIPTを読み込むまでループ
+        {
+            fgets(cRead, sizeof(cRead), pFile);// 行単位で文字列を読み込み
+            sscanf(cRead, "%s", &cHead);// 読み込んだテキストを比較用変数に代入
+        }
+        // SCRIPTを読み込んだ時
+        if (strcmp(cHead, "SCRIPT") == 0)
+        {
+            while (strcmp(cHead, "END_SCRIPT") != 0)//END_SCRIPTを読み込むまでループ
+            {
+                // 文字列の読み込み
+                fgets(cRead, sizeof(cRead), pFile);//位置行単位で文字列を読み込み
+                sscanf(cRead, "%s", &cHead);//読み込んだテキストを比較用変数に代入
+
+                // ステージファイルを読み込み
+                if (strcmp(cHead, "FILE_NAME") == 0)
+                {
+                    sscanf(cRead, "%s %s", &cDie, &m_pFileName);    // ステージファイルを保存
+                    m_nStageNum++;// 読み込んだステージ数を増やす
+                }
+            }
+        }
+    // ファイルクローズ
+    fclose(pFile);
+    }
+}
+
